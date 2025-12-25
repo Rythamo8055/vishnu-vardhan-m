@@ -1,0 +1,186 @@
+.hudContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 999;
+    /* Boost to Max */
+    font-family: 'Space Mono', 'Courier New', monospace;
+    overflow: hidden;
+    mix-blend-mode: normal;
+}
+
+/* --- Shared Glass Panel Style --- */
+.glassPanel {
+    position: absolute;
+    background: rgba(10, 10, 12, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.2rem;
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.glassPanel:hover {
+    background: rgba(20, 20, 25, 0.6);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+.label {
+    display: block;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 0.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.value {
+    display: block;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+/* --- Positioning Fragments --- */
+
+/* Fragment Alpha: Top Left (Identity) */
+.panelTL {
+    top: 3rem;
+    left: 3rem;
+    display: flex;
+    gap: 2rem;
+}
+
+/* Fragment Beta: Top Right (System) */
+.panelTR {
+    top: 3rem;
+    right: 3rem;
+    text-align: right;
+    display: flex;
+    gap: 2rem;
+}
+
+/* Fragment Gamma: Bottom Left (Skills) */
+.panelBL {
+    bottom: 3rem;
+    left: 3rem;
+    width: 220px;
+}
+
+/* Fragment Delta: Bottom Right (Stats) */
+.panelBR {
+    bottom: 3rem;
+    right: 3rem;
+    width: 250px;
+    text-align: right;
+}
+
+/* Fragment Omega: Bottom Center (CTA) */
+.panelBC {
+    position: absolute;
+    bottom: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: auto;
+    z-index: 200;
+}
+
+/* --- Content Styles --- */
+
+.liveDot {
+    width: 6px;
+    height: 6px;
+    background-color: #00ff41;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+    box-shadow: 0 0 6px #00ff41;
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+.skillRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.6rem;
+    font-size: 0.8rem;
+}
+
+.skillBarBg {
+    width: 80px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.skillBarFill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: #fff;
+    width: 0%;
+    /* Animated */
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.statRow {
+    margin-bottom: 1rem;
+}
+
+.statRow:last-child {
+    margin-bottom: 0;
+}
+
+.sectionHeader {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* --- Deploy Button --- */
+.deployBtn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 0.8rem 2.5rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+}
+
+.deployBtn:hover {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+}

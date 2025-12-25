@@ -1,0 +1,503 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.waveSvg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.content {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: #fff;
+    overflow-y: auto;
+}
+
+.closeBtn {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(14, 16, 15, 0.1);
+    color: #0e100f;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    z-index: 100;
+}
+
+.closeBtn:hover {
+    background: rgba(14, 16, 15, 0.2);
+    transform: scale(1.05);
+}
+
+.projectBackBtn {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(14, 16, 15, 0.1);
+    color: #0e100f;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    z-index: 100;
+}
+
+.projectBackBtn:hover {
+    background: rgba(14, 16, 15, 0.2);
+    transform: scale(1.05);
+}
+
+.container {
+    padding: 6rem 2rem 4rem;
+    min-height: 100vh;
+}
+
+.title {
+    font-size: 4rem;
+    font-weight: 800;
+    color: #0e100f;
+    margin-bottom: 1rem;
+    text-align: center;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+}
+
+.subtitle {
+    color: rgba(14, 16, 15, 0.6);
+    font-size: 1.125rem;
+    margin-bottom: 4rem;
+    text-align: center;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+/* ===== HORIZONTAL GALLERY ===== */
+.horizontalWrapper {
+    width: 100%;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    overflow: visible;
+    /* Let GSAP handle pinning/overflow if needed, or specific setup */
+    margin: 4rem 0;
+}
+
+.horizontalStrip {
+    display: flex;
+    flex-wrap: nowrap;
+    width: fit-content;
+    height: 100%;
+    padding-left: 10vw;
+    /* Start with some offset */
+    gap: 6vw;
+}
+
+.projectCard {
+    position: relative;
+    flex: 0 0 auto;
+    width: 22vw;
+    height: 28vw;
+    /* default aspect ratio */
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    /* Quick transition for magnetic, GSAP handles smooth */
+    perspective: 1000px;
+}
+
+.cardInner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.projectCard:hover .cardInner {
+    transform: scale(0.98);
+}
+
+.cardInner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease, filter 0.5s ease;
+}
+
+.projectCard:hover img {
+    transform: scale(1.1);
+    filter: grayscale(0%);
+}
+
+.cardOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 60%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.projectCard:hover .cardOverlay {
+    opacity: 1;
+}
+
+/* Shapes */
+.shape-pill .cardInner {
+    border-radius: 1000px;
+}
+
+.shape-circle {
+    width: 25vw;
+    height: 25vw;
+}
+
+.shape-circle .cardInner {
+    border-radius: 50%;
+}
+
+.shape-rect .cardInner {
+    border-radius: 12px;
+}
+
+/* Staggered Layouts using align-self inside the Flex Strip */
+.layout-up {
+    align-self: flex-start;
+}
+
+.layout-down {
+    align-self: flex-end;
+}
+
+.layout-middle {
+    align-self: center;
+}
+
+/* Typography reuse */
+.year {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.itemTitle {
+    color: #fff;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+/* ===== PROJECT DETAIL OVERLAY ===== */
+.projectDetailOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+}
+
+.projectWaveSvg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.projectDetail {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    z-index: 2;
+    overflow-y: auto;
+    animation: fadeIn 0.3s ease both;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.projectGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+}
+
+.projectImageSection {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+}
+
+.projectImageWrap {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.15);
+}
+
+.projectImageWrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.projectInfoSection {
+    padding: 6rem 5rem;
+    color: #0e100f;
+}
+
+.projectHeader {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.projectNumber {
+    font-size: 8rem;
+    font-weight: 800;
+    color: rgba(0, 0, 0, 0.05);
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+    position: absolute;
+    top: -4rem;
+    left: -1rem;
+    pointer-events: none;
+    user-select: none;
+}
+
+.projectYear {
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.1em;
+}
+
+.projectTitle {
+    font-size: 4.5rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 2rem;
+    color: #0e100f;
+    letter-spacing: -0.04em;
+    position: relative;
+}
+
+.projectDescription {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    color: rgba(14, 16, 15, 0.75);
+    margin-bottom: 3rem;
+    max-width: 540px;
+    font-weight: 400;
+}
+
+.projectDetails {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.detailBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.detailLabel {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(14, 16, 15, 0.4);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.detailValue {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0e100f;
+}
+
+.tagsSection {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.tag {
+    padding: 0.5rem 1.25rem;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 100px;
+    font-size: 0.85rem;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.projectActions {
+    display: flex;
+    gap: 1rem;
+}
+
+.primaryBtn {
+    padding: 1.1rem 2.5rem;
+    background: #0e100f;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: -0.01em;
+}
+
+.primaryBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    background: #000;
+}
+
+.secondaryBtn {
+    padding: 1rem 2rem;
+    background: transparent;
+    color: #0e100f;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 100px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.secondaryBtn:hover {
+    border-color: #0e100f;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+    .projectGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .projectImageSection {
+        position: relative;
+        height: auto;
+        padding: 2rem;
+    }
+
+    .projectInfoSection {
+        padding: 3rem 2rem;
+    }
+
+    .projectTitle {
+        font-size: 2rem;
+    }
+
+    .projectNumber {
+        font-size: 3rem;
+    }
+
+    .projectDetails {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 5rem 1rem 3rem;
+    }
+
+    .bentoGrid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(3, 35vh);
+    }
+
+    .bentoGrid .gridItem:nth-child(1) {
+        grid-area: 1 / 1 / 2 / 2;
+    }
+
+    .bentoGrid .gridItem:nth-child(2) {
+        grid-area: 1 / 2 / 2 / 3;
+    }
+
+    .bentoGrid .gridItem:nth-child(3) {
+        grid-area: 2 / 1 / 3 / 2;
+    }
+
+    .bentoGrid .gridItem:nth-child(4) {
+        grid-area: 2 / 2 / 3 / 3;
+    }
+
+    .bentoGrid .gridItem:nth-child(5) {
+        grid-area: 3 / 1 / 4 / 2;
+    }
+
+    .bentoGrid .gridItem:nth-child(6) {
+        grid-area: 3 / 2 / 4 / 3;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .projectDetails {
+        grid-template-columns: 1fr;
+    }
+
+    .projectActions {
+        flex-direction: column;
+    }
+
+    .closeBtn,
+    .backBtn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+}

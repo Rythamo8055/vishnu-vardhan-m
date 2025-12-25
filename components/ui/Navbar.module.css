@@ -1,0 +1,123 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 2rem;
+    background: transparent;
+    pointer-events: none;
+    /* Allow clicking through empty space */
+}
+
+.navContent {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: auto;
+    /* Re-enable clicks on content */
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logoText {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #fffce1;
+    letter-spacing: -0.02em;
+}
+
+.navLinks {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.projectsBtn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #ff8709 0%, #f7bdf8 100%);
+    border: none;
+    border-radius: 100px;
+    color: #0e100f;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.projectsBtn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #ffd9b0 0%, #ff8709 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.projectsBtn:hover::before {
+    opacity: 1;
+}
+
+.projectsBtn:hover {
+    box-shadow: 0 8px 30px rgba(255, 135, 9, 0.4);
+}
+
+.btnText {
+    position: relative;
+    z-index: 1;
+}
+
+.btnIcon {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.projectsBtn:hover .btnIcon {
+    transform: translate(2px, -2px);
+}
+
+/* Subtle glow effect */
+.projectsBtn::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, #ff8709, #f7bdf8, #ff8709);
+    border-radius: 100px;
+    z-index: -1;
+    opacity: 0;
+    filter: blur(15px);
+    transition: opacity 0.3s ease;
+}
+
+.projectsBtn:hover::after {
+    opacity: 0.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem 1.25rem;
+    }
+
+    .projectsBtn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.875rem;
+    }
+
+    .logoText {
+        font-size: 1.1rem;
+    }
+}

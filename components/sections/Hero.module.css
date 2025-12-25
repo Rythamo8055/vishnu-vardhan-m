@@ -1,0 +1,158 @@
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: #0e100f;
+    cursor: default;
+}
+
+/* Base Layer: Blurred Content */
+.blurLayer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.blurContent {
+    width: 100%;
+    height: 100%;
+    filter: blur(15px);
+    /* Matches overlay blur */
+}
+
+/* Fog Overlay */
+.fogOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.1);
+    mix-blend-mode: hard-light;
+    z-index: 2;
+}
+
+/* Scanner Window */
+.scannerWindow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 450px;
+    height: 140px;
+    border-radius: 20px;
+    overflow: hidden;
+    z-index: 10;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    will-change: transform;
+}
+
+.scannerUI {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    pointer-events: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    margin: 4px;
+}
+
+/* Corners */
+.corner {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: rgba(255, 255, 255, 0.8);
+    border-style: solid;
+    border-width: 0;
+}
+
+.cornerTL {
+    top: 12px;
+    left: 12px;
+    border-top-width: 2px;
+    border-left-width: 2px;
+}
+
+.cornerTR {
+    top: 12px;
+    right: 12px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+}
+
+.cornerBL {
+    bottom: 12px;
+    left: 12px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+}
+
+.cornerBR {
+    bottom: 12px;
+    right: 12px;
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+}
+
+/* Sharp Content inside Window */
+.sharpContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    transform-origin: top left;
+    will-change: transform;
+}
+
+/* Hint Text - Z-index < Scanner Window (10) */
+.hintText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    color: rgba(255, 255, 255, 0.4);
+    pointer-events: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    mix-blend-mode: overlay;
+}
+
+/* Reveal Link Button */
+.revealLink {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    /* Above everything */
+    padding: 0.8rem 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.revealLink:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+    .scannerWindow {
+        width: 300px;
+        height: 100px;
+        border-radius: 12px;
+    }
+}

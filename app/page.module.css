@@ -1,0 +1,53 @@
+.main {
+    width: 100%;
+    min-height: 100vh;
+    background: #0e100f;
+    position: relative;
+    z-index: 1;
+}
+
+.sectionContainer {
+    position: relative;
+    width: 100%;
+    background: #fff;
+    /* Ensure contrast for projects */
+    z-index: 2;
+}
+
+.sectionDark {
+    padding: 8rem 2rem;
+    background: #0e100f;
+    color: #fff;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sectionLight {
+    padding: 8rem 2rem;
+    background: #fff;
+    color: #0e100f;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contentWrapper {
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+}
+
+.contentWrapper h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.contentWrapper p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    opacity: 0.8;
+}

@@ -1,0 +1,13 @@
+.flair {
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 135, 9, 0.8) 0%, rgba(247, 189, 248, 0.4) 50%, transparent 70%);
+    mix-blend-mode: screen;
+    filter: blur(2px);
+}

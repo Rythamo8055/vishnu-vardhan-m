@@ -1,0 +1,31 @@
+.container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.currentSection {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+}
+
+.nextSection {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.curveOverlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.path {
+    vector-effect: non-scaling-stroke;
+}
