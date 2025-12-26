@@ -9,9 +9,10 @@ import styles from './Navbar.module.css';
 interface NavbarProps {
     onProjectsClick: () => void;
     onCuriousClick: () => void;
+    onIdentityClick: () => void;
 }
 
-const Navbar = ({ onProjectsClick, onCuriousClick }: NavbarProps) => {
+const Navbar = ({ onProjectsClick, onCuriousClick, onIdentityClick }: NavbarProps) => {
     const navRef = useRef<HTMLElement>(null);
     const projectsBtnRef = useRef<HTMLButtonElement>(null);
     const curiousBtnRef = useRef<HTMLButtonElement>(null);
@@ -32,6 +33,21 @@ const Navbar = ({ onProjectsClick, onCuriousClick }: NavbarProps) => {
                 { y: 20, opacity: 0 },
                 { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', stagger: 0.1, delay: 0.8 }
             );
+
+            // LOGO ANIMATION (Continuous Draw/Undraw)
+            const path = document.querySelector(`.${styles.logoPath}`) as SVGGraphicsElement;
+            if (path) {
+                // Text elements don't support getTotalLength, so we use a sufficient approximation
+                const length = 300;
+                gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+
+                const tl = gsap.timeline({ repeat: -1, repeatDelay: 1, yoyo: true });
+                tl.to(path, {
+                    strokeDashoffset: 0,
+                    duration: 3,
+                    ease: "power2.inOut"
+                });
+            }
         });
 
         return () => ctx.revert();
@@ -90,10 +106,34 @@ const Navbar = ({ onProjectsClick, onCuriousClick }: NavbarProps) => {
                 <div className={styles.navContent}>
                     {/* Logo */}
                     <div className={`${styles.logo} ${styles.navItem}`}>
-                        <span className={styles.logoText}>Portfolio</span>
+                        {/* Animated SVG Logo */}
+                        <svg className={styles.logoSvg} width="160" height="40" viewBox="0 0 160 40">
+                            <text
+                                className={styles.logoPath}
+                                x="0"
+                                y="30"
+                                fontFamily="sans-serif"
+                                fontSize="28"
+                                fontWeight="800"
+                                fill="none"
+                                stroke="#fffce1"
+                                strokeWidth="1"
+                                letterSpacing="0.1em"
+                            >
+                                VISHNU
+                            </text>
+                        </svg>
                     </div>
 
                     <div className={styles.navLinks}>
+                        <button
+                            className={`${styles.projectsBtn} ${styles.navItem} ${styles.curiousBtn}`}
+                            onMouseMove={handleMagnetMove}
+                            onMouseLeave={handleMagnetLeave}
+                            onClick={onIdentityClick}
+                        >
+                            <span className={styles.btnText}>Identity</span>
+                        </button>
                         <button
                             ref={curiousBtnRef}
                             className={`${styles.projectsBtn} ${styles.navItem} ${styles.curiousBtn}`}

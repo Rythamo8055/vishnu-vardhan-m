@@ -5,7 +5,19 @@ import gsap from 'gsap';
 import CuriousContent from '@/components/sections/CuriousContent';
 import styles from './Hero.module.css';
 
-const Hero = () => {
+interface HeroProps {
+    title?: string;
+    hintText?: string;
+    linkText?: string;
+    linkHref?: string;
+}
+
+const Hero = ({
+    title = 'Identity',
+    hintText = 'Explore the Unseen',
+    linkText = 'Return Home',
+    linkHref = '/'
+}: HeroProps) => {
     const windowRef = useRef<HTMLDivElement>(null);
     const sharpContentRef = useRef<HTMLDivElement>(null);
 
@@ -26,6 +38,22 @@ const Hero = () => {
         };
 
         window.addEventListener('mousemove', moveWindow);
+
+        // Paper Plane Animation
+        // Fly in a loop that 'points' to the button
+        const plane = document.querySelector(`.${styles.paperPlane}`);
+        if (plane) {
+            gsap.to(plane, {
+                y: 15,
+                x: -10,
+                rotation: -10,
+                duration: 2,
+                yoyo: true,
+                repeat: -1,
+                ease: "sine.inOut"
+            });
+        }
+
         return () => window.removeEventListener('mousemove', moveWindow);
     }, []);
 
@@ -54,10 +82,17 @@ const Hero = () => {
             </div>
 
             {/* Hint Text */}
-            <p className={styles.hintText}>Explore the Unseen</p>
+            <p className={styles.hintText}>{hintText}</p>
 
-            <a href="/reveal" className={styles.revealLink}>
-                Identity
+            <a href={linkHref} className={styles.revealLink}>
+                {title}
+
+                {/* Paper Plane - Flying in specific path */}
+                <div className={styles.paperPlaneContainer}>
+                    <svg className={styles.paperPlane} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 12l20-9-9 20-2-9-9-2z" />
+                    </svg>
+                </div>
             </a>
         </section>
     );

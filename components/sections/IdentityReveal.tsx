@@ -38,6 +38,65 @@ const IdentityReveal = () => {
     const [imagesLoaded, setImagesLoaded] = useState(false);
     const maskImgRef = useRef<HTMLImageElement | null>(null);
 
+    // Draw the full mask from maskImgRef
+    const drawFullMask = useCallback((ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number, width: number, height: number) => {
+        if (!maskImgRef.current) return;
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        ctx.drawImage(maskImgRef.current, offsetX, offsetY, width, height);
+    }, []);
+
+    // Restore a block from the mask image
+    const restoreBlock = useCallback((ctx: CanvasRenderingContext2D, block: ActiveBlock) => {
+        if (!maskImgRef.current || !manRef.current || !containerRef.current) return;
+
+        const container = containerRef.current;
+        const man = manRef.current;
+        const cRect = container.getBoundingClientRect();
+        const mRect = man.getBoundingClientRect();
+        const offsetX = mRect.left - cRect.left;
+        const offsetY = mRect.top - cRect.top;
+
+        // Calculate source coordinates on the mask image
+        const srcX = (block.x - offsetX) * (maskImgRef.current.width / mRect.width);
+        const srcY = (block.y - offsetY) * (maskImgRef.current.height / mRect.height);
+        const srcW = CONFIG.BLOCK_SIZE * (maskImgRef.current.width / mRect.width);
+        const srcH = CONFIG.BLOCK_SIZE * (maskImgRef.current.height / mRect.height);
+
+        ctx.drawImage(
+            maskImgRef.current,
+            srcX, srcY, srcW, srcH,
+            block.x, block.y, CONFIG.BLOCK_SIZE, CONFIG.BLOCK_SIZE
+        );
+    }, []);
+
+    // Draw initial state
+    const draw = useCallback(() => {
+        const canvas = canvasRef.current;
+        const ctx = canvas?.getContext('2d');
+        const container = containerRef.current;
+        const man = manRef.current;
+
+        if (!canvas || !ctx || !container || !man || !maskImgRef.current) return;
+
+        // High-DPI support
+        const dpr = window.devicePixelRatio || 1;
+        const rect = container.getBoundingClientRect();
+
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.scale(dpr, dpr);
+
+        // CSS size
+        canvas.style.width = `${rect.width}px`;
+        canvas.style.height = `${rect.height}px`;
+
+        const mRect = man.getBoundingClientRect();
+        const offsetX = mRect.left - rect.left;
+        const offsetY = mRect.top - rect.top;
+
+        drawFullMask(ctx, offsetX, offsetY, mRect.width, mRect.height);
+    }, [imagesLoaded, drawFullMask]);
+
     // Text Animation on Mount
     useEffect(() => {
         if (!nameRef.current) return;
@@ -99,81 +158,50 @@ const IdentityReveal = () => {
             { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' },
             0
         );
-
-        // Load Mask Image
-        const img = new Image();
-        img.src = '/reveal/mask.png';
-        img.onload = () => {
-            maskImgRef.current = img;
-            checkLoad();
-        };
     }, []);
 
-    const checkLoad = () => {
-        if (maskImgRef.current && manRef.current?.complete) {
-            setImagesLoaded(true);
-        }
-    };
+    // Load images
+    useEffect(() => {
+        const man = new Image();
+        const mask = new Image();
 
-    // Canvas Setup
-    const initCanvas = useCallback(() => {
-        const canvas = canvasRef.current;
-        const ctx = canvas?.getContext('2d', { willReadFrequently: true });
-        const container = containerRef.current;
-        const man = manRef.current;
+        // Bust cache to force new image load
+        const t = Date.now();
+        man.src = `/components/main-face.jpg?t=${t}`;
+        mask.src = `/reveal/mask.png?t=${t}`;
 
-        if (!canvas || !ctx || !maskImgRef.current || !container || !man) return;
+        man.crossOrigin = "anonymous";
+        mask.crossOrigin = "anonymous";
 
-        const cRect = container.getBoundingClientRect();
-        canvas.width = cRect.width;
-        canvas.height = cRect.height;
+        let loadedCount = 0;
+        const onLoad = () => {
+            loadedCount++;
+            if (loadedCount === 2) {
+                maskImgRef.current = mask;
+                // We don't necessarily need store man in a ref if it's in the DOM, 
+                // but we wait for both to ensure layout is ready
+                setImagesLoaded(true);
+            }
+        };
 
-        const mRect = man.getBoundingClientRect();
-        const offsetX = mRect.left - cRect.left;
-        const offsetY = mRect.top - cRect.top;
+        man.onload = onLoad;
+        mask.onload = onLoad;
+    }, []);
 
-        drawFullMask(ctx, offsetX, offsetY, mRect.width, mRect.height);
-    }, [imagesLoaded]);
-
-    const drawFullMask = (ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number) => {
-        if (!maskImgRef.current) return;
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.drawImage(maskImgRef.current, x, y, w, h);
-    };
-
-    const restoreBlock = (ctx: CanvasRenderingContext2D, block: ActiveBlock) => {
-        if (!maskImgRef.current || !manRef.current || !containerRef.current) return;
-
-        const cRect = containerRef.current.getBoundingClientRect();
-        const mRect = manRef.current.getBoundingClientRect();
-        const startX = mRect.left - cRect.left;
-        const startY = mRect.top - cRect.top;
-
-        const relX = block.x - startX;
-        const relY = block.y - startY;
-
-        const img = maskImgRef.current;
-        const scaleX = img.width / mRect.width;
-        const scaleY = img.height / mRect.height;
-
-        const sx = relX * scaleX;
-        const sy = relY * scaleY;
-        const sSize = CONFIG.BLOCK_SIZE * scaleX;
-
-        try {
-            ctx.drawImage(img, sx, sy, sSize, sSize, block.x, block.y, CONFIG.BLOCK_SIZE, CONFIG.BLOCK_SIZE);
-        } catch (e) { }
-    };
-
+    // Handle Resize & Init
     useEffect(() => {
         if (imagesLoaded) {
-            initCanvas();
-            window.addEventListener('resize', initCanvas);
+            draw();
+            window.addEventListener('resize', draw);
+
+            // Start Animation Loop
             const ctx = canvasRef.current?.getContext('2d');
-            if (ctx) animate(ctx);
+            if (ctx) {
+                animate(ctx);
+            }
         }
-        return () => window.removeEventListener('resize', initCanvas);
-    }, [imagesLoaded, initCanvas]);
+        return () => window.removeEventListener('resize', draw);
+    }, [imagesLoaded, draw]);
 
     const animate = (ctx: CanvasRenderingContext2D) => {
         const loop = () => {
@@ -256,8 +284,7 @@ const IdentityReveal = () => {
 
     return (
         <div ref={containerRef} className={styles.container}>
-            <div className={styles.instruction}>Scan to Reveal</div>
-            <a href="/" className={styles.returnLink}>Return to Start</a>
+
 
             {/* Single Text Layer with Opacity Mask */}
             <div ref={nameRef} className={styles.nameText}>
@@ -271,10 +298,10 @@ const IdentityReveal = () => {
             <div className={styles.wrapper}>
                 <img
                     ref={manRef}
-                    src="/reveal/man.png"
+                    src="/components/main-face.jpg"
                     alt="Identity"
                     className={styles.manImage}
-                    onLoad={checkLoad}
+                // onLoad handled in useEffect manually with cache busting
                 />
                 <canvas
                     ref={canvasRef}

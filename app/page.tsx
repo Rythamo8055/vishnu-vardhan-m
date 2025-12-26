@@ -2,11 +2,17 @@
 
 import { useState } from 'react';
 import { Hero, Cursor, SmoothScroll, Navbar, ProjectsOverlay, CuriousOverlay } from '@/components';
+import IdentityReveal from '@/components/sections/IdentityReveal';
 import styles from './page.module.css';
 
 export default function Home() {
   const [showProjects, setShowProjects] = useState(false);
   const [showCurious, setShowCurious] = useState(false);
+
+  // Scroll to Identity (Top)
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <>
@@ -14,14 +20,15 @@ export default function Home() {
       <Navbar
         onProjectsClick={() => setShowProjects(true)}
         onCuriousClick={() => setShowCurious(true)}
+        onIdentityClick={scrollToTop}
       />
       <ProjectsOverlay isOpen={showProjects} onClose={() => setShowProjects(false)} />
       <CuriousOverlay isOpen={showCurious} onClose={() => setShowCurious(false)} />
 
       <SmoothScroll>
         <main className={styles.main}>
-          {/* Hero Section */}
-          <Hero />
+          {/* Hero Section - Identity Reveal */}
+          <IdentityReveal />
 
           {/* About Section */}
           <section id="about" className={styles.sectionDark}>

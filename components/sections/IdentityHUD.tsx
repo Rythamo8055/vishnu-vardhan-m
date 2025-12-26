@@ -55,35 +55,16 @@ const IdentityHUD = () => {
     }, []);
 
     const handleDeploy = () => {
-        window.location.href = "mailto:vishnu.vardhan@example.com?subject=Deploying Offer";
+        const aboutSection = document.getElementById('about');
+        if (aboutSection) {
+            aboutSection.scrollIntoView({ behavior: 'smooth' });
+        }
     };
 
     return (
         <div ref={containerRef} className={styles.hudContainer}>
 
-            {/* Top Left: Identity */}
-            <div className={`${styles.glassPanel} ${styles.panelTL}`}>
-                <div>
-                    <span className={styles.label}>OPERATIVE</span>
-                    <span className={styles.value}>VISHNU VARDHAN</span>
-                </div>
-                <div>
-                    <span className={styles.label}>STATUS</span>
-                    <span className={styles.value}>ONLINE <span className={styles.liveDot}></span></span>
-                </div>
-            </div>
-
-            {/* Top Right: System */}
-            <div className={`${styles.glassPanel} ${styles.panelTR}`}>
-                <div>
-                    <span className={styles.label}>SYSTEM</span>
-                    <span className={styles.value}>LINUX::KERNEL</span>
-                </div>
-                <div>
-                    <span className={styles.label}>BASE</span>
-                    <span className={styles.value}>HYD, IND</span>
-                </div>
-            </div>
+            {/* Top Area Cleared for Navbar */}
 
             {/* Bottom Left: Skills Stack */}
             <div className={`${styles.glassPanel} ${styles.panelBL}`}>
@@ -119,7 +100,7 @@ const IdentityHUD = () => {
             {/* Bottom Center: CTA */}
             <div className={`${styles.panelBC}`}>
                 <button className={styles.deployBtn} onClick={handleDeploy}>
-                    [ DEPLOY OFFER ]
+                    [ SCROLL DOWN ]
                 </button>
             </div>
 

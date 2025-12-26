@@ -29,6 +29,8 @@ const WaveEntrance = () => {
     // So start at 0 (Screen Covered) and animate to 100 (Screen Uncovered).
 
     useEffect(() => {
+        setMounted(true); // Fix: Enable rendering after hydration
+
         // Initialize points at 0 (Top/Covered)
         allPointsRef.current = [];
         for (let i = 0; i < NUM_PATHS; i++) {

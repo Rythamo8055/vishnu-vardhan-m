@@ -52,22 +52,7 @@
 
 /* --- Positioning Fragments --- */
 
-/* Fragment Alpha: Top Left (Identity) */
-.panelTL {
-    top: 3rem;
-    left: 3rem;
-    display: flex;
-    gap: 2rem;
-}
-
-/* Fragment Beta: Top Right (System) */
-.panelTR {
-    top: 3rem;
-    right: 3rem;
-    text-align: right;
-    display: flex;
-    gap: 2rem;
-}
+/* Top panels removed for Navbar space */
 
 /* Fragment Gamma: Bottom Left (Skills) */
 .panelBL {

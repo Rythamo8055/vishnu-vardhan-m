@@ -128,25 +128,148 @@
     transform: translateX(-50%);
     z-index: 30;
     /* Above everything */
-    padding: 0.8rem 2rem;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 30px;
-    color: #fff;
+    padding: 1rem 2.5rem;
+    background: #1a1a1a;
+    /* Matte dark */
+    color: #e0e0e0;
+    border: 1px solid #333;
+    border-radius: 4px;
+    /* Sharper, more technical look */
     text-decoration: none;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.8rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     transition: all 0.3s ease;
     cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+@keyframes gradientPulse {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Grainy Texture Overlay */
+.revealLink::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.1;
+    pointer-events: none;
+    mix-blend-mode: overlay;
 }
 
 .revealLink:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateX(-50%) scale(1.05);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.revealLink:hover::before {
+    opacity: 1;
+    filter: blur(20px);
+}
+
+/* Arrow SVG inside button */
+.revealArrow {
+    width: 24px;
+    height: 24px;
+    fill: #000;
+    animation: bounceArrow 1.5s ease-in-out infinite;
+}
+
+@keyframes bounceArrow {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(8px);
+    }
+}
+
+/* Orbiting particles around button */
+.orbitContainer {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    pointer-events: none;
+    animation: orbitSpin 10s linear infinite;
+}
+
+@keyframes orbitSpin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.orbitParticle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff, 0 0 20px #48dbfb;
+}
+
+.orbitParticle:nth-child(1) {
+    top: 0;
+    left: 50%;
+}
+
+.orbitParticle:nth-child(2) {
+    top: 50%;
+    right: 0;
+}
+
+.orbitParticle:nth-child(3) {
+    bottom: 0;
+    left: 50%;
+}
+
+.orbitParticle:nth-child(4) {
+    top: 50%;
+    left: 0;
+}
+
+.paperPlaneContainer {
+    position: absolute;
+    top: -60px;
+    right: -50px;
+    width: 60px;
+    height: 60px;
+    pointer-events: none;
+}
+
+.paperPlane {
+    width: 100%;
+    height: 100%;
+    fill: #fff;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4));
+    opacity: 0.9;
 }
 
 @media (max-width: 768px) {
@@ -154,5 +277,10 @@
         width: 300px;
         height: 100px;
         border-radius: 12px;
+    }
+
+    .revealLink {
+        padding: 1rem 2rem;
+        font-size: 0.9rem;
     }
 }

@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useRef, ReactNode } from 'react';
+import { useEffect, useRef, ReactNode, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollSmoother } from 'gsap/ScrollSmoother';
 
+// Register plugins client-side only
 if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 }
@@ -16,22 +17,33 @@ interface SmoothScrollProps {
 const SmoothScroll = ({ children }: SmoothScrollProps) => {
     const wrapperRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        if (!wrapperRef.current || !contentRef.current) return;
+        setMounted(true);
+    }, []);
 
-        const smoother = ScrollSmoother.create({
-            wrapper: wrapperRef.current,
-            content: contentRef.current,
-            smooth: 3,
-            effects: true,
-            smoothTouch: 0.1,
-        });
+    useEffect(() => {
+        if (!mounted || !wrapperRef.current || !contentRef.current) return;
+
+        let smoother: ScrollSmoother | null = null;
+
+        try {
+            smoother = ScrollSmoother.create({
+                wrapper: wrapperRef.current,
+                content: contentRef.current,
+                smooth: 2,
+                effects: true,
+                smoothTouch: 0.1,
+            });
+        } catch (e) {
+            console.error('ScrollSmoother failed to initialize:', e);
+        }
 
         return () => {
-            smoother.kill();
+            smoother?.kill();
         };
-    }, []);
+    }, [mounted]);
 
     return (
         <div id="smooth-wrapper" ref={wrapperRef}>

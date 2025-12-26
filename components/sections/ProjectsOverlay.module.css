@@ -1,229 +1,268 @@
+/* ProjectsOverlay.module.css */
+
+/* 1. Main Overlay Wrapper */
 .overlay {
     position: fixed;
     inset: 0;
     z-index: 9999;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    pointer-events: auto;
+    /* Enable clicks */
+    background: transparent;
 }
 
+/* 2. Transition SVG (Black Wave) */
 .waveSvg {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     z-index: 1;
+    pointer-events: none;
 }
 
+/* 3. Scroll Container (Critical for GSAP Scroller) */
 .content {
     position: absolute;
     inset: 0;
     z-index: 2;
-    background: #fff;
+    width: 100%;
+    height: 100vh;
+    background: transparent;
+    /* Background provided by SVG */
+
+    /* ENABLE SCROLLING */
     overflow-y: auto;
-}
+    overflow-x: hidden;
 
-.closeBtn {
-    position: fixed;
-    top: 1.5rem;
-    right: 1.5rem;
+    /* Scrollbar Styling */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    padding: 0;
-    border: none;
-    border-radius: 50%;
-    background: rgba(14, 16, 15, 0.1);
-    color: #0e100f;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-    z-index: 100;
+    flex-direction: column;
 }
 
-.closeBtn:hover {
-    background: rgba(14, 16, 15, 0.2);
-    transform: scale(1.05);
+.content::-webkit-scrollbar {
+    width: 6px;
 }
 
-.projectBackBtn {
-    position: fixed;
-    top: 1.5rem;
-    right: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    padding: 0;
-    border: none;
-    border-radius: 50%;
-    background: rgba(14, 16, 15, 0.1);
-    color: #0e100f;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-    z-index: 100;
+.content::-webkit-scrollbar-track {
+    background: transparent;
 }
 
-.projectBackBtn:hover {
-    background: rgba(14, 16, 15, 0.2);
-    transform: scale(1.05);
+.content::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
 }
 
+/* 4. Layout Container */
 .container {
-    padding: 6rem 2rem 4rem;
-    min-height: 100vh;
+    padding-top: 8rem;
+    /* Space for close button */
+    padding-bottom: 4rem;
+    width: 100%;
+    min-height: 100%;
+    /* Allows content to expand */
+    display: flex;
+    flex-direction: column;
 }
 
+/* 5. Typography - Premium Dark Mode Style */
 .title {
-    font-size: 4rem;
+    font-family: 'Inter', sans-serif;
+    /* Assuming Inter or system font */
+    font-size: clamp(3rem, 8vw, 8rem);
     font-weight: 800;
-    color: #0e100f;
-    margin-bottom: 1rem;
-    text-align: center;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
+    color: #ffffff;
+    margin: 0 0 0.5rem 5vw;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    opacity: 0.9;
 }
 
 .subtitle {
-    color: rgba(14, 16, 15, 0.6);
-    font-size: 1.125rem;
-    margin-bottom: 4rem;
-    text-align: center;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.6;
+    font-family: 'Inter', sans-serif;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    margin: 0 0 4rem 5.5vw;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    max-width: 400px;
+    line-height: 1.5;
 }
 
-/* ===== HORIZONTAL GALLERY ===== */
-.horizontalWrapper {
-    width: 100%;
-    height: 60vh;
+/* 6. Close Button - Floating Glass */
+.closeBtn {
+    position: fixed;
+    top: 2.5rem;
+    right: 2.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
     display: flex;
     align-items: center;
-    overflow: visible;
-    /* Let GSAP handle pinning/overflow if needed, or specific setup */
-    margin: 4rem 0;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    color: #fff;
+    cursor: pointer;
+    z-index: 50;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.closeBtn:hover {
+    background: #fff;
+    color: #000;
+    transform: scale(1.1) rotate(90deg);
+    border-color: #fff;
+}
+
+/* 7. Horizontal Scroll Section */
+.horizontalWrapper {
+    width: 100%;
+    /* Height must be large enough to be a 'section' but 
+       GSAP will pin it, effectively making it 100vh during the scroll */
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    /* Ensure it doesn't collapse */
+    flex-shrink: 0;
 }
 
 .horizontalStrip {
     display: flex;
-    flex-wrap: nowrap;
-    width: fit-content;
-    height: 100%;
-    padding-left: 10vw;
-    /* Start with some offset */
     gap: 6vw;
+    /* Breathing room between cards */
+    padding: 0 5vw;
+    /* Start padding */
+    width: max-content;
+    /* Allow strip to be as long as needed */
+    height: 60vh;
+    align-items: center;
+    will-change: transform;
 }
 
+/* 8. Project Cards */
 .projectCard {
+    width: 30vw;
+    /* Responsive width */
+    max-width: 500px;
+    min-width: 320px;
+    height: 45vh;
+    min-height: 400px;
     position: relative;
-    flex: 0 0 auto;
-    width: 22vw;
-    height: 28vw;
-    /* default aspect ratio */
+    flex-shrink: 0;
+    cursor: none;
+    /* We show magnet cursor usually, or pointer */
     cursor: pointer;
-    transition: transform 0.1s ease;
-    /* Quick transition for magnetic, GSAP handles smooth */
     perspective: 1000px;
+}
+
+/* Card Layout Staggering */
+.layout-up {
+    transform: translateY(-40px);
+}
+
+.layout-down {
+    transform: translateY(40px);
+}
+
+.layout-middle {
+    transform: translateY(0);
+}
+
+/* Card Shapes */
+.shape-pill .cardInner {
+    border-radius: 100px;
+}
+
+.shape-circle .cardInner {
+    border-radius: 50%;
+    aspect-ratio: 1;
+    height: auto;
+}
+
+.shape-rect .cardInner {
+    border-radius: 24px;
 }
 
 .cardInner {
     width: 100%;
     height: 100%;
-    position: relative;
     overflow: hidden;
-    transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    background: #1a1a1a;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
 }
 
 .projectCard:hover .cardInner {
-    transform: scale(0.98);
+    transform: scale(0.96);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .cardInner img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.8s ease, filter 0.5s ease;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
+    opacity: 0.8;
 }
 
 .projectCard:hover img {
-    transform: scale(1.1);
-    filter: grayscale(0%);
+    transform: scale(1.15);
+    opacity: 0.6;
+    filter: blur(2px) grayscale(50%);
 }
 
+/* Card Text Overlay */
 .cardOverlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 60%);
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     padding: 2rem;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
 }
 
 .projectCard:hover .cardOverlay {
     opacity: 1;
+    transform: translateY(0);
 }
 
-/* Shapes */
-.shape-pill .cardInner {
-    border-radius: 1000px;
-}
-
-.shape-circle {
-    width: 25vw;
-    height: 25vw;
-}
-
-.shape-circle .cardInner {
-    border-radius: 50%;
-}
-
-.shape-rect .cardInner {
-    border-radius: 12px;
-}
-
-/* Staggered Layouts using align-self inside the Flex Strip */
-.layout-up {
-    align-self: flex-start;
-}
-
-.layout-down {
-    align-self: flex-end;
-}
-
-.layout-middle {
-    align-self: center;
-}
-
-/* Typography reuse */
 .year {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
+    font-size: 0.85rem;
+    font-weight: 500;
     text-transform: uppercase;
-    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.7);
     margin-bottom: 0.5rem;
+    display: block;
 }
 
 .itemTitle {
-    color: #fff;
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    color: #fff;
     line-height: 1.1;
 }
 
-/* ===== PROJECT DETAIL OVERLAY ===== */
+/* 9. Project Detail Overlay (When clicked) */
 .projectDetailOverlay {
     position: fixed;
     inset: 0;
-    z-index: 50;
+    z-index: 10000;
+    pointer-events: auto;
 }
 
 .projectWaveSvg {
@@ -232,195 +271,172 @@
     width: 100%;
     height: 100%;
     z-index: 1;
+    pointer-events: none;
 }
 
+/* Detail Content */
 .projectDetail {
     position: absolute;
     inset: 0;
-    background: #fff;
     z-index: 2;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    /* White wave covers underneath */
     overflow-y: auto;
-    animation: fadeIn 0.3s ease both;
+    display: flex;
+    flex-direction: column;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
+.projectBackBtn {
+    position: fixed;
+    top: 2.5rem;
+    left: 2.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 50;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-    to {
-        opacity: 1;
-    }
+.projectBackBtn:hover {
+    transform: scale(1.1);
 }
 
 .projectGrid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 45% 55%;
     min-height: 100vh;
+    background: #fff;
+    /* Detail view is LIGHT themed */
 }
 
 .projectImageSection {
     position: sticky;
     top: 0;
     height: 100vh;
-    background: #f5f5f5;
+    background: #f0f0f0;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4rem;
+    padding: 3rem;
 }
 
 .projectImageWrap {
     width: 100%;
-    max-width: 500px;
+    height: 80vh;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.15);
+    position: relative;
 }
 
 .projectImageWrap img {
     width: 100%;
-    height: auto;
-    display: block;
+    height: 100%;
+    object-fit: cover;
 }
 
 .projectInfoSection {
-    padding: 6rem 5rem;
-    color: #0e100f;
+    padding: 6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .projectHeader {
     display: flex;
     align-items: center;
-    gap: 2rem;
-    margin-bottom: 2rem;
-    position: relative;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 2rem;
 }
 
 .projectNumber {
     font-size: 8rem;
     font-weight: 800;
-    color: rgba(0, 0, 0, 0.05);
+    color: #f0f0f0;
     line-height: 0.8;
-    letter-spacing: -0.05em;
-    position: absolute;
-    top: -4rem;
-    left: -1rem;
-    pointer-events: none;
-    user-select: none;
-}
-
-.projectYear {
-    font-size: 0.9rem;
-    color: rgba(0, 0, 0, 0.5);
-    letter-spacing: 0.1em;
 }
 
 .projectTitle {
-    font-size: 4.5rem;
+    font-size: 3.5rem;
     font-weight: 800;
-    line-height: 1;
-    margin-bottom: 2rem;
-    color: #0e100f;
-    letter-spacing: -0.04em;
-    position: relative;
+    color: #000;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
 }
 
 .projectDescription {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
+    color: #555;
     line-height: 1.7;
-    color: rgba(14, 16, 15, 0.75);
-    margin-bottom: 3rem;
-    max-width: 540px;
-    font-weight: 400;
+    margin-bottom: 4rem;
+    max-width: 90%;
 }
 
 .projectDetails {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-bottom: 2rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.detailBlock {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+    margin-bottom: 4rem;
 }
 
 .detailLabel {
-    font-size: 0.7rem;
+    display: block;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    color: rgba(14, 16, 15, 0.4);
-    font-weight: 600;
-    margin-bottom: 0.25rem;
+    color: #999;
+    margin-bottom: 0.75rem;
 }
 
 .detailValue {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #0e100f;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #000;
 }
 
 .tagsSection {
+    margin-bottom: 4rem;
     display: flex;
-    gap: 0.75rem;
     flex-wrap: wrap;
-    margin-bottom: 2rem;
+    gap: 0.75rem;
 }
 
 .tag {
     padding: 0.5rem 1.25rem;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid #e5e5e5;
     border-radius: 100px;
     font-size: 0.85rem;
-    color: rgba(0, 0, 0, 0.6);
-}
-
-.projectActions {
-    display: flex;
-    gap: 1rem;
+    color: #666;
 }
 
 .primaryBtn {
-    padding: 1.1rem 2.5rem;
-    background: #0e100f;
+    background: #000;
     color: #fff;
     border: none;
-    border-radius: 8px;
+    padding: 1.25rem 2.5rem;
+    border-radius: 100px;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    letter-spacing: -0.01em;
+    align-self: flex-start;
+    transition: transform 0.3s ease;
 }
 
 .primaryBtn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
-    background: #000;
+    transform: translateY(-4px);
 }
 
-.secondaryBtn {
-    padding: 1rem 2rem;
-    background: transparent;
-    color: #0e100f;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 100px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: border-color 0.3s ease;
-}
-
-.secondaryBtn:hover {
-    border-color: #0e100f;
-}
-
-/* ===== RESPONSIVE ===== */
+/* Responsive */
 @media (max-width: 1024px) {
     .projectGrid {
         grid-template-columns: 1fr;
@@ -430,74 +446,14 @@
         position: relative;
         height: auto;
         padding: 2rem;
+        aspect-ratio: 16/9;
+    }
+
+    .projectImageWrap {
+        height: 100%;
     }
 
     .projectInfoSection {
         padding: 3rem 2rem;
-    }
-
-    .projectTitle {
-        font-size: 2rem;
-    }
-
-    .projectNumber {
-        font-size: 3rem;
-    }
-
-    .projectDetails {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-    .container {
-        padding: 5rem 1rem 3rem;
-    }
-
-    .bentoGrid {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: repeat(3, 35vh);
-    }
-
-    .bentoGrid .gridItem:nth-child(1) {
-        grid-area: 1 / 1 / 2 / 2;
-    }
-
-    .bentoGrid .gridItem:nth-child(2) {
-        grid-area: 1 / 2 / 2 / 3;
-    }
-
-    .bentoGrid .gridItem:nth-child(3) {
-        grid-area: 2 / 1 / 3 / 2;
-    }
-
-    .bentoGrid .gridItem:nth-child(4) {
-        grid-area: 2 / 2 / 3 / 3;
-    }
-
-    .bentoGrid .gridItem:nth-child(5) {
-        grid-area: 3 / 1 / 4 / 2;
-    }
-
-    .bentoGrid .gridItem:nth-child(6) {
-        grid-area: 3 / 2 / 4 / 3;
-    }
-
-    .title {
-        font-size: 2rem;
-    }
-
-    .projectDetails {
-        grid-template-columns: 1fr;
-    }
-
-    .projectActions {
-        flex-direction: column;
-    }
-
-    .closeBtn,
-    .backBtn {
-        padding: 0.6rem 1rem;
-        font-size: 0.85rem;
     }
 }
