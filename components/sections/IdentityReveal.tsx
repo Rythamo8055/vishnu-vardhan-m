@@ -278,9 +278,67 @@ const IdentityReveal = () => {
             }
         };
 
+        const onTouchMove = (e: TouchEvent) => {
+            if (!canvasRef.current) return;
+            // Prevent scrolling while scanning if touching the canvas
+            if (e.cancelable && e.target === canvasRef.current) {
+                e.preventDefault();
+            }
+
+            const rect = canvasRef.current.getBoundingClientRect();
+            const touch = e.touches[0];
+            const mouseX = touch.clientX - rect.left;
+            const mouseY = touch.clientY - rect.top;
+
+            const startCol = Math.floor((mouseX - CONFIG.RADIUS) / CONFIG.BLOCK_SIZE);
+            const endCol = Math.ceil((mouseX + CONFIG.RADIUS) / CONFIG.BLOCK_SIZE);
+            const startRow = Math.floor((mouseY - CONFIG.RADIUS) / CONFIG.BLOCK_SIZE);
+            const endRow = Math.ceil((mouseY + CONFIG.RADIUS) / CONFIG.BLOCK_SIZE);
+
+            for (let c = startCol; c <= endCol; c++) {
+                for (let r = startRow; r <= endRow; r++) {
+                    const x = c * CONFIG.BLOCK_SIZE;
+                    const y = r * CONFIG.BLOCK_SIZE;
+
+                    const dx = x + CONFIG.BLOCK_SIZE / 2 - mouseX;
+                    const dy = y + CONFIG.BLOCK_SIZE / 2 - mouseY;
+
+                    if (dx * dx + dy * dy < CONFIG.RADIUS * CONFIG.RADIUS) {
+                        const key = `${c},${r}`;
+                        if (!activeBlocksRef.current.has(key)) {
+                            activeBlocksRef.current.set(key, {
+                                col: c,
+                                row: r,
+                                x,
+                                y,
+                                startTime: Date.now(),
+                                isScrambling: true
+                            });
+                        } else {
+                            const block = activeBlocksRef.current.get(key);
+                            if (block && (Date.now() - block.startTime > CONFIG.SCRAMBLE_DURATION)) {
+                                block.startTime = Date.now() - CONFIG.SCRAMBLE_DURATION;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
         window.addEventListener('mousemove', onMouseMove);
-        return () => window.removeEventListener('mousemove', onMouseMove);
-    }, []);
+        // Use passive: false to allow preventDefault
+        const canvasEl = canvasRef.current;
+        if (canvasEl) {
+            canvasEl.addEventListener('touchmove', onTouchMove, { passive: false });
+        }
+
+        return () => {
+            window.removeEventListener('mousemove', onMouseMove);
+            if (canvasEl) {
+                canvasEl.removeEventListener('touchmove', onTouchMove);
+            }
+        };
+    }, [imagesLoaded]);
 
     return (
         <div ref={containerRef} className={styles.container}>

@@ -1,98 +1,86 @@
 'use client';
+// Rebuild trigger
 
 import { useRef, useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Draggable } from 'gsap/Draggable';
 import gsap from 'gsap';
 import styles from './ProjectsOverlay.module.css';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, Draggable);
 
+// --- CONSTANTS ---
+const NUM_POINTS = 5;
+const NUM_PATHS = 2; // Black and White
+const DELAY_PER_PATH = 0.08;
+
+// Stabilize random delays for wave feel
+const STABLE_DELAYS = [0.0, 0.12, 0.05, 0.18, 0.02];
+
+// --- MOCK DATA FOR PROJECTS ---
 const projectImages = [
     {
-        src: 'https://assets.codepen.io/16327/portrait-pattern-1.jpg',
-        title: 'Pattern Design',
-        description: 'Geometric patterns and visual design exploration.',
-        tags: ['Design', 'Patterns'],
+        src: 'https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop', // Minimal Arch
+        title: 'LUMINA',
         year: '2024',
-        client: 'Studio X',
-        role: 'Lead Designer',
-        services: ['Brand Identity', 'Pattern Design'],
-        duration: '3 months',
-        layout: 'middle',
+        client: 'Lumina Arch',
+        role: 'Creative Dev',
+        duration: '4 Weeks',
+        description: 'A minimal architecture portfolio focusing on negative space and light. The site features smooth page transitions and WebGL distortions.',
+        tags: ['WebGL', 'Next.js', 'GSAP'],
+        layout: 'up',
+        shape: 'rect'
+    },
+    {
+        src: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop', // Abstract Dark
+        title: 'NOCTURNE',
+        year: '2023',
+        client: 'Nocturne Label',
+        role: 'Full Stack',
+        duration: '2 Months',
+        description: 'An immersive dark-mode e-commerce experience for a luxury fashion label. Features real-time 3D product rendering.',
+        tags: ['Three.js', 'Shopify', 'React'],
+        layout: 'down',
         shape: 'pill'
     },
     {
-        src: 'https://assets.codepen.io/16327/portrait-image-12.jpg',
-        title: 'Portrait Series',
-        description: 'A collection of portrait photography capturing human emotion.',
-        tags: ['Photography', 'Portraits'],
-        year: '2024',
-        client: 'Vogue',
-        role: 'Photographer',
-        services: ['Photography', 'Post-Production'],
-        duration: '2 months',
-        layout: 'up',
+        src: 'https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?q=80&w=2000&auto=format&fit=crop', // Nature/Green
+        title: 'VERIDIAN',
+        year: '2023',
+        client: 'EcoSpace',
+        role: 'Frontend',
+        duration: '3 Weeks',
+        description: 'A sustainability report for a green energy firm, utilizing data visualization and organic SVG animations.',
+        tags: ['D3.js', 'SVG', 'Vue'],
+        layout: 'middle',
         shape: 'circle'
     },
     {
-        src: 'https://assets.codepen.io/16327/portrait-image-8.jpg',
-        title: 'Urban Light',
-        description: 'Light and shadow in urban environments.',
-        tags: ['Urban', 'Photography'],
-        year: '2023',
-        client: 'City Magazine',
-        role: 'Creative Director',
-        services: ['Photography', 'Art Direction'],
-        duration: '4 months',
-        layout: 'down',
-        shape: 'rect'
-    },
-    {
-        src: 'https://assets.codepen.io/16327/portrait-pattern-2.jpg',
-        title: 'Abstract Flow',
-        description: 'Abstract art and flowing forms.',
-        tags: ['Abstract', 'Art'],
-        year: '2023',
-        client: 'Gallery Modern',
-        role: 'Artist',
-        services: ['Digital Art', 'Installation'],
-        duration: '6 months',
-        layout: 'middle',
-        shape: 'rect'
-    },
-    {
-        src: 'https://assets.codepen.io/16327/portrait-image-4.jpg',
-        title: 'Natural Beauty',
-        description: 'Beauty in natural settings.',
-        tags: ['Nature', 'Beauty'],
-        year: '2023',
-        client: 'Nature Weekly',
-        role: 'Photographer',
-        services: ['Photography', 'Styling'],
-        duration: '2 months',
+        src: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=2000&auto=format&fit=crop', // Portrait/Model
+        title: 'AURA',
+        year: '2024',
+        client: 'Aura Models',
+        role: 'Lead Dev',
+        duration: '6 Weeks',
+        description: 'A high-performance portfolio for a modeling agency. Infinite scroll galleries and micro-interactions define the experience.',
+        tags: ['Svelte', 'Lenis', 'Vercel'],
         layout: 'up',
-        shape: 'pill'
+        shape: 'rect'
     },
     {
-        src: 'https://assets.codepen.io/16327/portrait-image-3.jpg',
-        title: 'Motion Study',
-        description: 'Capturing movement and energy.',
-        tags: ['Motion', 'Creative'],
+        src: 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=2000&auto=format&fit=crop', // Forest/Mystic
+        title: 'SYLVAN',
         year: '2022',
-        client: 'Dance Theatre',
-        role: 'Visual Artist',
-        services: ['Motion Capture', 'Video Production'],
-        duration: '5 months',
+        client: 'Sylvan Lodge',
+        role: 'Creative Dev',
+        duration: '1 Month',
+        description: 'Atmospheric booking site for a forest retreat. heavy use of parallax and sound design.',
+        tags: ['React', 'Howler.js', 'Framer'],
         layout: 'down',
-        shape: 'circle'
+        shape: 'pill'
     },
 ];
-
-const NUM_PATHS = 2;
-const NUM_POINTS = 10;
-const STABLE_DELAYS = [0.02, 0.05, 0.03, 0.06, 0.04, 0.07, 0.03, 0.05, 0.04, 0.02];
-const DELAY_PER_PATH = 0.1;
 
 interface ProjectsOverlayProps {
     isOpen: boolean;
@@ -100,78 +88,98 @@ interface ProjectsOverlayProps {
 }
 
 const ProjectsOverlay = ({ isOpen, onClose }: ProjectsOverlayProps) => {
-    const [showContent, setShowContent] = useState(false);
-    const [isAnimating, setIsAnimating] = useState(false);
     const [selectedProject, setSelectedProject] = useState<number | null>(null);
     const [showProjectDetail, setShowProjectDetail] = useState(false);
+    const [isAnimating, setIsAnimating] = useState(false);
     const [isProjectAnimating, setIsProjectAnimating] = useState(false);
     const [mounted, setMounted] = useState(false);
-
-    const contentRef = useRef<HTMLDivElement>(null);
-    const pathRefs = useRef<(SVGPathElement | null)[]>([]);
-    const allPointsRef = useRef<number[][]>([]);
-
-    const projectDetailRef = useRef<HTMLDivElement>(null);
-    const projectPathRefs = useRef<(SVGPathElement | null)[]>([]);
-    const projectPointsRef = useRef<number[][]>([]);
+    const [showContent, setShowContent] = useState(false); // Restore missing state
 
     useEffect(() => {
         setMounted(true);
-        // Initialize main overlay points
-        allPointsRef.current = [];
-        for (let i = 0; i < NUM_PATHS; i++) {
-            const points: number[] = [];
-            for (let j = 0; j < NUM_POINTS; j++) {
-                points.push(100);
-            }
-            allPointsRef.current.push(points);
-        }
-
-        // Initialize project detail points
-        projectPointsRef.current = [];
-        for (let i = 0; i < NUM_PATHS; i++) {
-            const points: number[] = [];
-            for (let j = 0; j < NUM_POINTS; j++) {
-                points.push(100);
-            }
-            projectPointsRef.current.push(points);
-        }
     }, []);
 
     const stripRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
+    const projectDetailRef = useRef<HTMLDivElement>(null);
 
-    // ... (keep existing refs) ...
+    // Refs for animation
+    const pathRefs = useRef<(SVGPathElement | null)[]>([]);
+    const allPointsRef = useRef<number[][]>([]);
 
-    // Horizontal Scroll Trigger Logic
+    // Refs for Project Detail Wave
+    const projectPathRefs = useRef<(SVGPathElement | null)[]>([]);
+    const projectPointsRef = useRef<number[][]>([]);
+
+    // Initialize points if empty
+    if (allPointsRef.current.length === 0) {
+        for (let i = 0; i < NUM_PATHS; i++) {
+            allPointsRef.current[i] = new Array(NUM_POINTS).fill(100);
+        }
+    }
+
+    if (projectPointsRef.current.length === 0) {
+        for (let i = 0; i < NUM_PATHS; i++) {
+            projectPointsRef.current[i] = new Array(NUM_POINTS).fill(100);
+        }
+    }
+
+    // ... (keep useEffects)
+
+    // Horizontal Scroll / Drag Logic
     useEffect(() => {
         if (!isOpen || !showContent || !stripRef.current || !wrapperRef.current || !contentRef.current) return;
 
         const ctx = gsap.context(() => {
             const sections = gsap.utils.toArray('.' + styles.horizontalWrapper);
 
-            sections.forEach((sec: any) => {
+            // GSAP MatchMedia for Responsive Logic
+            const mm = gsap.matchMedia();
+
+            mm.add({
+                // Desktop: Horizontal Scroll via ScrollTrigger
+                isDesktop: "(min-width: 768px)",
+                // Mobile: Draggable Carousel
+                isMobile: "(max-width: 767px)"
+            }, (context) => {
+                const { isDesktop, isMobile } = context.conditions as any;
                 const pinWrap = stripRef.current;
+
                 if (!pinWrap) return;
 
-                const pinWrapWidth = pinWrap.scrollWidth;
-                const horizontalScrollLength = pinWrapWidth - window.innerWidth;
+                if (isDesktop) {
+                    // DESKTOP LOGIC
+                    const pinWrapWidth = pinWrap.scrollWidth;
+                    const horizontalScrollLength = pinWrapWidth - window.innerWidth;
 
-                gsap.to(pinWrap, {
-                    x: -horizontalScrollLength,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: sec,
-                        scroller: contentRef.current,
-                        pin: true,
-                        scrub: 1, // Add some smoothing
-                        start: "center center",
-                        end: () => "+=" + pinWrapWidth,
-                        invalidateOnRefresh: true,
-                    }
-                });
+                    gsap.to(pinWrap, {
+                        x: -horizontalScrollLength,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: sections[0] as Element,
+                            scroller: contentRef.current,
+                            pin: true,
+                            scrub: 1,
+                            start: "center center",
+                            end: () => "+=" + pinWrapWidth,
+                            invalidateOnRefresh: true,
+                        }
+                    });
+                } else if (isMobile) {
+                    // MOBILE LOGIC: Draggable
+                    Draggable.create(pinWrap, {
+                        type: "x",
+                        bounds: wrapperRef.current,
+                        inertia: true,
+                        edgeResistance: 0.65,
+                        throwProps: true, // Requires InertiaPlugin, but basic Draggable works without
+                        dragClickables: true,
+                    });
+                }
             });
-        }, contentRef); // Scope to content
+
+        }, contentRef);
 
         return () => ctx.revert();
     }, [isOpen, showContent]);

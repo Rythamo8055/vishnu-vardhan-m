@@ -123,44 +123,112 @@
 /* 7. Horizontal Scroll Section */
 .horizontalWrapper {
     width: 100%;
-    /* Height must be large enough to be a 'section' but 
-       GSAP will pin it, effectively making it 100vh during the scroll */
+    /* Desktop: 100vh for pinned scroll */
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     overflow: hidden;
-    /* Ensure it doesn't collapse */
     flex-shrink: 0;
 }
 
 .horizontalStrip {
     display: flex;
     gap: 6vw;
-    /* Breathing room between cards */
     padding: 0 5vw;
-    /* Start padding */
     width: max-content;
-    /* Allow strip to be as long as needed */
     height: 60vh;
     align-items: center;
     will-change: transform;
+    cursor: grab;
+}
+
+.horizontalStrip:active {
+    cursor: grabbing;
 }
 
 /* 8. Project Cards */
 .projectCard {
     width: 30vw;
-    /* Responsive width */
     max-width: 500px;
     min-width: 320px;
     height: 45vh;
     min-height: 400px;
     position: relative;
     flex-shrink: 0;
-    cursor: none;
-    /* We show magnet cursor usually, or pointer */
     cursor: pointer;
     perspective: 1000px;
+    user-select: none;
+    /* Prevent text selection during drag */
+}
+
+/* RESPONSIVE OVERRIDES */
+@media (max-width: 767px) {
+    .container {
+        padding-top: 5.5rem;
+        /* Reduced from 5rem to fit better */
+        padding-bottom: 2rem;
+        justify-content: flex-start;
+    }
+
+    .title {
+        font-size: 3rem;
+        /* Smaller title for mobile */
+        margin-left: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+        font-size: 0.9rem;
+        margin-left: 1.6rem;
+        margin-bottom: 1.5rem;
+        /* Less gap before cards */
+    }
+
+    .horizontalWrapper {
+        height: auto;
+        /* Let it grow naturally */
+        min-height: 50vh;
+        margin-top: 0;
+        align-items: flex-start;
+        overflow: visible;
+        /* Allow drop shadows */
+    }
+
+    .horizontalStrip {
+        height: auto;
+        gap: 1rem;
+        padding: 0 1.5rem;
+        padding-bottom: 2rem;
+        /* diverse padding */
+    }
+
+    .projectCard {
+        width: 80vw;
+        height: 50vh;
+        max-height: 500px;
+        min-height: 300px;
+    }
+
+    /* Reset layout transforms on mobile for uniform look */
+    .layout-up,
+    .layout-down,
+    .layout-middle {
+        transform: none !important;
+    }
+
+    /* Make text always visible on mobile since there is no hover */
+    .cardOverlay {
+        opacity: 1;
+        transform: translateY(0);
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 60%);
+        justify-content: flex-end;
+        padding-bottom: 3rem;
+    }
+
+    .cardInner {
+        transform: none !important;
+    }
 }
 
 /* Card Layout Staggering */

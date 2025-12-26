@@ -116,3 +116,18 @@
     -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 15%, rgba(0, 0, 0, 1) 50%);
     mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 15%, rgba(0, 0, 0, 1) 50%);
 }
+
+@media (max-width: 768px) {
+    .nameText {
+        font-size: 18vw;
+        line-height: 0.9;
+        /* Move slightly up to clear eyes/mask center */
+        transform: translate(-50%, -60%) scaleY(1.2);
+    }
+
+    .instruction {
+        width: 100%;
+        text-align: center;
+        top: 20%;
+    }
+}

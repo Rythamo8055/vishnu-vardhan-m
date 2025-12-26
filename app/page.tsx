@@ -1,13 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Hero, Cursor, SmoothScroll, Navbar, ProjectsOverlay, CuriousOverlay } from '@/components';
 import IdentityReveal from '@/components/sections/IdentityReveal';
 import styles from './page.module.css';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function Home() {
   const [showProjects, setShowProjects] = useState(false);
   const [showCurious, setShowCurious] = useState(false);
+
+  useEffect(() => {
+    // Fix mobile browser address bar scroll jitters
+    ScrollTrigger.normalizeScroll(true);
+  }, []);
 
   // Scroll to Identity (Top)
   const scrollToTop = () => {

@@ -42,6 +42,7 @@
 .projectsBtn {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.3);
+    /* Stronger border */
     color: #fff;
     padding: 0.6rem 1.8rem;
     border-radius: 0;
