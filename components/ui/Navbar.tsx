@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
@@ -16,6 +16,9 @@ const Navbar = ({ onProjectsClick, onCuriousClick, onIdentityClick }: NavbarProp
     const navRef = useRef<HTMLElement>(null);
     const projectsBtnRef = useRef<HTMLButtonElement>(null);
     const curiousBtnRef = useRef<HTMLButtonElement>(null);
+    const mobileMenuRef = useRef<HTMLDivElement>(null);
+    const hamburgerRef = useRef<HTMLButtonElement>(null);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -53,6 +56,45 @@ const Navbar = ({ onProjectsClick, onCuriousClick, onIdentityClick }: NavbarProp
         return () => ctx.revert();
     }, []);
 
+    // Mobile Menu Animation
+    useEffect(() => {
+        if (!mobileMenuRef.current) return;
+
+        const ctx = gsap.context(() => {
+            const tl = gsap.timeline();
+
+            if (isMobileMenuOpen) {
+                // OPEN
+                tl.to(mobileMenuRef.current, {
+                    autoAlpha: 1, // Visibility + Opacity
+                    duration: 0.4,
+                    ease: 'power3.out'
+                })
+                    .fromTo(`.${styles.mobileLink}`,
+                        { y: 50, opacity: 0 },
+                        { y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: 'back.out(1.2)' },
+                        "-=0.2"
+                    );
+
+                // Animate Hamburger to X
+                // (Optional: Simple rotation or SVG morph if explicit paths were separate)
+                gsap.to(hamburgerRef.current, { rotation: 90, duration: 0.3 });
+
+            } else {
+                // CLOSE
+                tl.to(mobileMenuRef.current, {
+                    autoAlpha: 0,
+                    duration: 0.3,
+                    ease: 'power3.in'
+                });
+
+                gsap.to(hamburgerRef.current, { rotation: 0, duration: 0.3 });
+            }
+        });
+
+        return () => ctx.revert();
+    }, [isMobileMenuOpen]);
+
     // Reusable Magnetic Logic
     const handleMagnetMove = (e: React.MouseEvent<HTMLElement>) => {
         const target = e.currentTarget;
@@ -84,11 +126,19 @@ const Navbar = ({ onProjectsClick, onCuriousClick, onIdentityClick }: NavbarProp
             yoyo: true,
             repeat: 1,
             ease: 'power2.inOut',
-            onComplete: onCuriousClick // Call the prop
+            onComplete: () => {
+                setIsMobileMenuOpen(false);
+                onCuriousClick();
+            }
         });
     };
 
-    const handleClick = () => {
+    const handleIdentityClick = () => {
+        setIsMobileMenuOpen(false);
+        onIdentityClick();
+    };
+
+    const handleProjectsClick = () => {
         // Button press animation
         gsap.to(projectsBtnRef.current, {
             scale: 0.95,
@@ -96,8 +146,15 @@ const Navbar = ({ onProjectsClick, onCuriousClick, onIdentityClick }: NavbarProp
             yoyo: true,
             repeat: 1,
             ease: 'power2.inOut',
-            onComplete: onProjectsClick,
+            onComplete: () => {
+                setIsMobileMenuOpen(false);
+                onProjectsClick();
+            },
         });
+    };
+
+    const toggleMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
     };
 
     return (
@@ -106,12 +163,12 @@ const Navbar = ({ onProjectsClick, onCuriousClick, onIdentityClick }: NavbarProp
                 <div className={styles.navContent}>
                     {/* Logo */}
                     <div className={`${styles.logo} ${styles.navItem}`}>
-                        {/* Animated SVG Logo */}
-                        <svg className={styles.logoSvg} width="160" height="40" viewBox="0 0 160 40">
+                        {/* Animated SVG Logo - Adjusted Y to 32 for lower position */}
+                        <svg className={styles.logoSvg} width="160" height="45" viewBox="0 0 160 45">
                             <text
                                 className={styles.logoPath}
                                 x="0"
-                                y="30"
+                                y="35"
                                 fontFamily="sans-serif"
                                 fontSize="28"
                                 fontWeight="800"
@@ -125,6 +182,7 @@ const Navbar = ({ onProjectsClick, onCuriousClick, onIdentityClick }: NavbarProp
                         </svg>
                     </div>
 
+                    {/* Desktop Utility Links */}
                     <div className={styles.navLinks}>
                         <button
                             className={`${styles.projectsBtn} ${styles.navItem} ${styles.curiousBtn}`}
@@ -148,7 +206,7 @@ const Navbar = ({ onProjectsClick, onCuriousClick, onIdentityClick }: NavbarProp
                             className={`${styles.projectsBtn} ${styles.navItem}`}
                             onMouseMove={handleMagnetMove}
                             onMouseLeave={handleMagnetLeave}
-                            onClick={handleClick}
+                            onClick={handleProjectsClick}
                         >
                             <span className={styles.btnText}>Projects</span>
                             <span className={styles.btnIcon}>
@@ -158,8 +216,43 @@ const Navbar = ({ onProjectsClick, onCuriousClick, onIdentityClick }: NavbarProp
                             </span>
                         </button>
                     </div>
+
+                    {/* Mobile Hamburger - Only show when menu is closed */}
+                    {!isMobileMenuOpen && (
+                        <button
+                            ref={hamburgerRef}
+                            className={`${styles.hamburgerBtn} ${styles.navItem}`}
+                            onClick={toggleMenu}
+                            aria-label="Open Menu"
+                        >
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <line x1="3" y1="12" x2="21" y2="12"></line>
+                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                <line x1="3" y1="18" x2="21" y2="18"></line>
+                            </svg>
+                        </button>
+                    )}
                 </div>
             </nav>
+
+            {/* Mobile Menu Overlay */}
+            <div ref={mobileMenuRef} className={styles.mobileMenu}>
+                {/* Close Button */}
+                <button
+                    className={styles.closeMenuBtn}
+                    onClick={toggleMenu}
+                    aria-label="Close Menu"
+                >
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+
+                <button className={styles.mobileLink} onClick={handleIdentityClick}>Identity</button>
+                <button className={styles.mobileLink} onClick={handleProjectsClick}>Projects</button>
+                <button className={styles.mobileLink} onClick={handleCuriousClick}>Curious</button>
+            </div>
 
             {/* Transition Overlay (Hidden by default) */}
             <div

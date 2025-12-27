@@ -169,3 +169,48 @@
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
     transform: translateY(-2px);
 }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .hudContainer {
+        /* Position HUD below the 100vh hero using absolute positioning */
+        position: absolute;
+        top: 100vh;
+        /* Start right after hero viewport */
+        left: 0;
+        width: 100%;
+        height: auto;
+        background: #0e100f;
+        padding: 3rem 1.5rem;
+        pointer-events: auto;
+        overflow: visible;
+        z-index: 50;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    /* Hide Scroll Button on Mobile */
+    .deployBtn,
+    .panelBC {
+        display: none !important;
+    }
+
+    /* Stack Panels Vertically */
+    .glassPanel {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        right: auto;
+        width: 100%;
+        transform: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .panelBL,
+    .panelBR {
+        width: 100%;
+        text-align: left;
+    }
+}

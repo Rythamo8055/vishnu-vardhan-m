@@ -166,14 +166,12 @@
 @media (max-width: 767px) {
     .container {
         padding-top: 5.5rem;
-        /* Reduced from 5rem to fit better */
         padding-bottom: 2rem;
         justify-content: flex-start;
     }
 
     .title {
-        font-size: 3rem;
-        /* Smaller title for mobile */
+        font-size: 2.5rem;
         margin-left: 1.5rem;
         margin-bottom: 0.5rem;
     }
@@ -182,52 +180,104 @@
         font-size: 0.9rem;
         margin-left: 1.6rem;
         margin-bottom: 1.5rem;
-        /* Less gap before cards */
     }
 
     .horizontalWrapper {
         height: auto;
-        /* Let it grow naturally */
         min-height: 50vh;
         margin-top: 0;
         align-items: flex-start;
         overflow: visible;
-        /* Allow drop shadows */
     }
 
     .horizontalStrip {
         height: auto;
-        gap: 1rem;
+        gap: 1.5rem;
         padding: 0 1.5rem;
-        padding-bottom: 2rem;
-        /* diverse padding */
+        padding-bottom: 4rem;
+        flex-direction: column;
+        /* Stack cards vertically on mobile if preferred, or keep row for horizontal scroll. User said "nav bar buttons shrink into hamburger", "images... streched vertically", "hud... go down the image". Usually carousel on mobile is okay, but "scrooldown button" removal might imply vertical flow? 
+        Actually, the user complaint is "images set it looks like they streched vertically... huds... go down the image". 
+        If I keep horizontal strip, `flex-direction` should stay row. But Draggable is used.
+        Let's keep horizontal scroll but fix the CARD layout itself. */
+        width: auto;
+        /* Let it flow */
     }
 
     .projectCard {
-        width: 80vw;
-        height: 50vh;
-        max-height: 500px;
-        min-height: 300px;
+        width: 85vw;
+        /* Wider card */
+        max-width: none;
+        height: auto;
+        /* Allow height to fit content */
+        min-height: 0;
+        margin-bottom: 1rem;
     }
 
-    /* Reset layout transforms on mobile for uniform look */
+    /* Reset layout transforms */
     .layout-up,
     .layout-down,
     .layout-middle {
-        transform: none !important;
-    }
-
-    /* Make text always visible on mobile since there is no hover */
-    .cardOverlay {
-        opacity: 1;
-        transform: translateY(0);
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 60%);
-        justify-content: flex-end;
-        padding-bottom: 3rem;
+        transform: translateY(0) !important;
     }
 
     .cardInner {
-        transform: none !important;
+        display: flex;
+        flex-direction: column;
+        /* Stack Image + Text */
+        height: auto;
+        background: transparent;
+        /* Remove container bg to let overlay sit nicely or keep it if we want card look */
+        box-shadow: none;
+        overflow: visible;
+        /* Allow content to flow */
+    }
+
+    .cardInner img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4/3;
+        /* Fixed aspect ratio */
+        border-radius: 12px;
+        object-fit: cover;
+        margin-bottom: 1rem;
+    }
+
+    /* Override shapes for uniform mobile look */
+    .shape-pill .cardInner,
+    .shape-circle .cardInner,
+    .shape-rect .cardInner {
+        border-radius: 0;
+    }
+
+    .shape-pill .cardInner img,
+    .shape-circle .cardInner img,
+    .shape-rect .cardInner img {
+        border-radius: 12px;
+        aspect-ratio: 4/3;
+    }
+
+    .cardOverlay {
+        position: static;
+        /* Flow naturally below image */
+        transform: none;
+        opacity: 1;
+        padding: 0;
+        background: none;
+        align-items: flex-start;
+        text-align: left;
+        min-height: auto;
+    }
+
+    .year {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 0.25rem;
+    }
+
+    .itemTitle {
+        font-size: 1.5rem;
+        color: #fff;
     }
 }
 

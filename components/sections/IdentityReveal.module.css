@@ -32,7 +32,7 @@
     z-index: 1;
 }
 
-/* Canvas Overlay matches Man Image size/pos */
+/* Canvas Overlay matches Man Image size/pos - THIS CREATES THE REVEAL MASK */
 .maskCanvas {
     position: absolute;
     top: 50%;
@@ -89,7 +89,7 @@
     color: #fff;
 }
 
-/* Single Name Text Layer with Opacity Mask */
+/* Single Name Text Layer with Opacity Mask - FLOATS ON TOP */
 .nameText {
     position: absolute;
     top: 50%;
@@ -104,30 +104,81 @@
     color: #fff;
     text-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
     z-index: 150;
-    /* On top of mask/image */
+    /* Above image and canvas, floats on top */
     pointer-events: none;
     white-space: nowrap;
     text-transform: uppercase;
-
-    /* Magic Opacity Mask: 
-       Center = Semi-transparent (0.3 opacity) to show face
-       Sides = Opaque (1.0 opacity) to show on black bg
-    */
+    /* Opacity Mask: Center = Semi-transparent to show face, Sides = Opaque */
     -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 15%, rgba(0, 0, 0, 1) 50%);
     mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 15%, rgba(0, 0, 0, 1) 50%);
 }
 
+/* ===================== MOBILE STYLES ===================== */
+/* Match desktop behavior: face with mask, reveal on touch, text floating */
 @media (max-width: 768px) {
+    .container {
+        height: auto;
+        min-height: 200vh;
+        /* Room for hero (100vh) + HUD (below) */
+        overflow: visible;
+        position: relative;
+        display: block;
+    }
+
+    /* Hero wrapper: contains image and canvas, must be positioned correctly */
+    .wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    /* Image: centered within wrapper */
+    .manImage {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        height: auto;
+        max-width: 400px;
+        max-height: 70vh;
+        object-fit: contain;
+        z-index: 1;
+    }
+
+    /* Canvas: MUST match wrapper size exactly and be centered */
+    .maskCanvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        transform: none;
+    }
+
+    /* Text: floating on top, closer to bottom of viewport */
     .nameText {
-        font-size: 18vw;
+        position: absolute;
+        top: 70vh;
+        /* Closer to bottom */
+        left: 50%;
+        transform: translate(-50%, -50%) scaleY(1.2);
+        font-size: 15vw;
         line-height: 0.9;
-        /* Move slightly up to clear eyes/mask center */
-        transform: translate(-50%, -60%) scaleY(1.2);
+        z-index: 150;
     }
 
     .instruction {
         width: 100%;
         text-align: center;
-        top: 20%;
+        top: 10vh;
     }
 }
