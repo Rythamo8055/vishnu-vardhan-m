@@ -185,9 +185,63 @@
 }
 
 .imageContainer {
-    border-radius: 12px;
     overflow: hidden;
     aspect-ratio: 4/3;
+    /* Default: pill shape (fully rounded shorter sides) */
+    border-radius: 100px;
+}
+
+/* --- SHAPE VARIANTS (Material Design 3 inspired) --- */
+
+/* Shape 1: Standard Pill */
+.projectRow:nth-child(8n+1) .imageContainer {
+    border-radius: 100px;
+    aspect-ratio: 16/10;
+}
+
+/* Shape 2: Asymmetric - rounded top-left, sharp others */
+.projectRow:nth-child(8n+2) .imageContainer {
+    border-radius: 80px 16px 80px 16px;
+    aspect-ratio: 4/3;
+}
+
+/* Shape 3: Circle/Squircle */
+.projectRow:nth-child(8n+3) .imageContainer {
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    max-width: 400px;
+}
+
+/* Shape 4: Tall Pill */
+.projectRow:nth-child(8n+4) .imageContainer {
+    border-radius: 100px;
+    aspect-ratio: 3/4;
+    max-width: 350px;
+}
+
+/* Shape 5: Soft Rectangle */
+.projectRow:nth-child(8n+5) .imageContainer {
+    border-radius: 32px;
+    aspect-ratio: 16/9;
+}
+
+/* Shape 6: Asymmetric - diagonal corners */
+.projectRow:nth-child(8n+6) .imageContainer {
+    border-radius: 16px 80px 16px 80px;
+    aspect-ratio: 4/3;
+}
+
+/* Shape 7: Extra Rounded Rectangle */
+.projectRow:nth-child(8n+7) .imageContainer {
+    border-radius: 48px;
+    aspect-ratio: 1/1;
+    max-width: 380px;
+}
+
+/* Shape 8: Wide Pill */
+.projectRow:nth-child(8n+8) .imageContainer {
+    border-radius: 100px;
+    aspect-ratio: 2/1;
 }
 
 .imageContainer img {
