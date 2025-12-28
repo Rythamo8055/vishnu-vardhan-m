@@ -3,8 +3,8 @@ import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Portfolio",
-  description: "Creative Developer Portfolio",
+  title: "Vishnu Vardhan | AI Engineer",
+  description: "Portfolio of Vishnu Vardhan, an Aspiring AI Engineer, Fullstack Developer, and Creative Technologist.",
 };
 
 export default function RootLayout({
