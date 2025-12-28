@@ -280,10 +280,6 @@ const IdentityReveal = () => {
 
         const onTouchMove = (e: TouchEvent) => {
             if (!canvasRef.current) return;
-            // Prevent scrolling while scanning if touching the canvas
-            if (e.cancelable && e.target === canvasRef.current) {
-                e.preventDefault();
-            }
 
             const rect = canvasRef.current.getBoundingClientRect();
             const touch = e.touches[0];

@@ -75,6 +75,18 @@ export default function Home() {
                   </a>
                 </div>
               </div>
+              <div className={styles.footerCol}>
+                <h3>Action</h3>
+                <div className={styles.linkGroup}>
+                  <button
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    className={styles.footerLink}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 12 12 8 8 12"></polyline><line x1="12" y1="16" x2="12" y2="8"></line></svg>
+                    Back to Top
+                  </button>
+                </div>
+              </div>
             </div>
           </footer>
         </main>
