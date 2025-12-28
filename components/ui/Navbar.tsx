@@ -190,7 +190,7 @@ const Navbar = ({ onProjectsClick, onCuriousClick, onIdentityClick }: NavbarProp
                             onMouseLeave={handleMagnetLeave}
                             onClick={onIdentityClick}
                         >
-                            <span className={styles.btnText}>Identity</span>
+                            <span className={styles.btnText}>Let&apos;s Connect</span>
                         </button>
                         <button
                             ref={curiousBtnRef}
@@ -249,7 +249,7 @@ const Navbar = ({ onProjectsClick, onCuriousClick, onIdentityClick }: NavbarProp
                     </svg>
                 </button>
 
-                <button className={styles.mobileLink} onClick={handleIdentityClick}>Identity</button>
+                <button className={styles.mobileLink} onClick={handleIdentityClick}>Let&apos;s Connect</button>
                 <button className={styles.mobileLink} onClick={handleProjectsClick}>Projects</button>
                 <button className={styles.mobileLink} onClick={handleCuriousClick}>Curious</button>
             </div>
