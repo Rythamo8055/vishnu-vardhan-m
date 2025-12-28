@@ -4,7 +4,8 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    z-index: 100;
+    z-index: 9999;
+    /* Above navbar (1000) */
     background-color: #0e100f;
     color: #fffce1;
     overflow: hidden;
@@ -39,24 +40,26 @@
     position: fixed;
     top: 2rem;
     right: 2rem;
-    z-index: 220;
+    z-index: 10000;
+    /* Above everything */
     background: rgba(255, 255, 255, 0.1);
     border: none;
-    width: 48px;
-    height: 48px;
+    width: 3.5rem;
+    height: 3.5rem;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(4px);
     color: #fff;
+    transition: all 0.3s ease;
 }
 
 .closeBtn:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: scale(1.1) rotate(90deg);
+    background: #fff;
+    color: #000;
+    transform: rotate(90deg);
 }
 
 .container {
@@ -185,6 +188,7 @@
 }
 
 .imageContainer {
+    position: relative;
     overflow: hidden;
     aspect-ratio: 4/3;
     /* Default: pill shape (fully rounded shorter sides) */
@@ -193,55 +197,29 @@
 
 /* --- SHAPE VARIANTS (Material Design 3 inspired) --- */
 
-/* Shape 1: Standard Pill */
-.projectRow:nth-child(8n+1) .imageContainer {
+/* Shape 1: Wide Pill (Agentic UI) */
+.projectRow:nth-child(4n+1) .imageContainer {
     border-radius: 100px;
     aspect-ratio: 16/10;
 }
 
-/* Shape 2: Asymmetric - rounded top-left, sharp others */
-.projectRow:nth-child(8n+2) .imageContainer {
+/* Shape 2: Asymmetric (Rythamo Charity) */
+.projectRow:nth-child(4n+2) .imageContainer {
     border-radius: 80px 16px 80px 16px;
     aspect-ratio: 4/3;
 }
 
-/* Shape 3: Circle/Squircle */
-.projectRow:nth-child(8n+3) .imageContainer {
+/* Shape 3: Circle (Rythamo Day) */
+.projectRow:nth-child(4n+3) .imageContainer {
     border-radius: 50%;
     aspect-ratio: 1/1;
     max-width: 400px;
 }
 
-/* Shape 4: Tall Pill */
-.projectRow:nth-child(8n+4) .imageContainer {
-    border-radius: 100px;
-    aspect-ratio: 3/4;
-    max-width: 350px;
-}
-
-/* Shape 5: Soft Rectangle */
-.projectRow:nth-child(8n+5) .imageContainer {
+/* Shape 4: Soft Rectangle (Kahoot Clone) */
+.projectRow:nth-child(4n+4) .imageContainer {
     border-radius: 32px;
     aspect-ratio: 16/9;
-}
-
-/* Shape 6: Asymmetric - diagonal corners */
-.projectRow:nth-child(8n+6) .imageContainer {
-    border-radius: 16px 80px 16px 80px;
-    aspect-ratio: 4/3;
-}
-
-/* Shape 7: Extra Rounded Rectangle */
-.projectRow:nth-child(8n+7) .imageContainer {
-    border-radius: 48px;
-    aspect-ratio: 1/1;
-    max-width: 380px;
-}
-
-/* Shape 8: Wide Pill */
-.projectRow:nth-child(8n+8) .imageContainer {
-    border-radius: 100px;
-    aspect-ratio: 2/1;
 }
 
 .imageContainer img {
@@ -249,6 +227,32 @@
     height: 100%;
     object-fit: cover;
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.imageOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.imageOverlay span {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #fff;
+    border-radius: 100px;
+}
+
+.imageContainer:hover .imageOverlay {
+    opacity: 1;
 }
 
 .imageContainer:hover img {
@@ -272,6 +276,171 @@
     font-weight: 700;
     letter-spacing: -0.02em;
     color: #fffce1;
+}
+
+/* --- DETAIL VIEW --- */
+.detailView {
+    position: fixed;
+    inset: 0;
+    background: #0e100f;
+    z-index: 300;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.backBtn {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    z-index: 10000;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.backBtn:hover {
+    background: #fff;
+    color: #000;
+}
+
+.detailContent {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 100px 5% 60px;
+}
+
+.detailHero {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+}
+
+.detailHero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detailHeroOverlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.detailInfo {
+    padding: 0 1rem;
+}
+
+.detailMeta {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #888;
+}
+
+.detailTitle {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    color: #fffce1;
+}
+
+.detailDescription {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #aaa;
+    margin-bottom: 2.5rem;
+    white-space: pre-line;
+}
+
+.detailFeatures {
+    margin-bottom: 2.5rem;
+}
+
+.detailFeatures h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #fffce1;
+}
+
+.detailFeatures ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0.75rem;
+}
+
+.detailFeatures li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1rem;
+    color: #ccc;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+}
+
+.featureIcon {
+    font-size: 0.875rem;
+}
+
+.detailTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+}
+
+.detailTag {
+    padding: 0.5rem 1rem;
+    border: 1px solid;
+    border-radius: 100px;
+    font-size: 0.875rem;
+    color: #fff;
+}
+
+.detailActions {
+    display: flex;
+    gap: 1rem;
+}
+
+.githubBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    border-radius: 100px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.githubBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* --- RESPONSIVE --- */
@@ -308,6 +477,25 @@
         width: 40px;
         height: 40px;
     }
+
+    .backBtn {
+        top: 1rem;
+        left: 1rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.75rem;
+    }
+
+    .detailContent {
+        padding-top: 80px;
+    }
+
+    .detailHero {
+        border-radius: 16px;
+    }
+
+    .detailFeatures ul {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Extra small screens */
@@ -326,5 +514,14 @@
 
     .projectTitle {
         font-size: 1.75rem;
+    }
+
+    .detailTitle {
+        font-size: 2rem;
+    }
+
+    .githubBtn {
+        width: 100%;
+        justify-content: center;
     }
 }
