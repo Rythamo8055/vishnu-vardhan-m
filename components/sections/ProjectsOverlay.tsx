@@ -236,22 +236,22 @@ const ProjectsOverlay = ({ isOpen, onClose }: ProjectsOverlayProps) => {
             // @ts-ignore
             window.MorphSVGPlugin.convertToPath("#shape-c, #shape-r, #shape-a, #shape-f, #shape-t");
 
-            // Create the morphing timeline - shapes morph ONE AFTER ANOTHER with longer intervals
+            // Create the morphing timeline - shapes morph SIMULTANEOUSLY with longer intervals
             const morphTl = gsap.timeline({
                 repeat: -1,
                 repeatDelay: 3,  // 3 second pause before repeating
                 delay: 1,
                 yoyo: true,
-                defaults: { duration: 1.2, ease: "power2.inOut" }
+                defaults: { duration: 1.5, ease: "power2.inOut" }
             });
 
-            // Sequential morphing with 0.3s stagger between each shape
+            // Simultaneous morphing - all shapes start together
             morphTl
                 .to("#shape-c", { morphSVG: "#letter-c" })
-                .to("#shape-r", { morphSVG: "#letter-r" }, ">-0.3")
-                .to("#shape-a", { morphSVG: "#letter-a" }, ">-0.3")
-                .to("#shape-f", { morphSVG: "#letter-f" }, ">-0.3")
-                .to("#shape-t", { morphSVG: "#letter-t" }, ">-0.3");
+                .to("#shape-r", { morphSVG: "#letter-r" }, "<")
+                .to("#shape-a", { morphSVG: "#letter-a" }, "<")
+                .to("#shape-f", { morphSVG: "#letter-f" }, "<")
+                .to("#shape-t", { morphSVG: "#letter-t" }, "<");
         }
 
         // Small delay to ensure DOM is ready
@@ -406,7 +406,7 @@ const ProjectsOverlay = ({ isOpen, onClose }: ProjectsOverlayProps) => {
                     <div ref={containerRef} className={styles.container}>
                         {/* Animated Header with MorphSVG - Shapes morph into CRAFT letters */}
                         <header className={styles.header}>
-                            <svg className={styles.morphSvg} viewBox="0 0 640 180" preserveAspectRatio="xMidYMid meet">
+                            <svg className={styles.morphSvg} viewBox="-80 0 800 180" preserveAspectRatio="xMidYMid meet">
                                 <defs>
                                     {/* White/Cream Gradients for each shape */}
                                     <linearGradient id="grad-c" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -453,11 +453,11 @@ const ProjectsOverlay = ({ isOpen, onClose }: ProjectsOverlayProps) => {
                                 {/* Each shape centered at: 80, 200, 320, 440, 560 (120px apart) */}
                                 <circle id="shape-c" fill="url(#grad-c)" cx="80" cy="90" r="45" className={styles.morphShape} />
                                 <rect id="shape-r" fill="url(#grad-r)" x="155" y="45" width="90" height="90" rx="8" className={styles.morphShape} />
-                                <polygon id="shape-a" fill="url(#grad-a)" points="320,135 365,45 410,135" className={styles.morphShape} />
+                                <polygon id="shape-a" fill="url(#grad-a)" points="275,135 320,45 365,135" className={styles.morphShape} />
                                 <polygon id="shape-f" fill="url(#grad-f)" points="440,45 490,65 490,115 440,135 390,115 390,65" className={styles.morphShape} />
                                 <polygon id="shape-t" fill="url(#grad-t)" points="560,45 605,90 560,135 515,90" className={styles.morphShape} />
                             </svg>
-                            <p className={styles.subtitle}>Selected works 2024 — Present</p>
+                            <p className={styles.subtitle}>Beyond the Syllabus — A Collection of My Passion Projects</p>
                         </header>
 
                         {/* Spotlight Section with SVG Curve */}

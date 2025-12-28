@@ -5,7 +5,7 @@
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 10001;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(255, 135, 9, 0.6) 0%, rgba(247, 189, 248, 0.3) 50%, transparent 70%);
     mix-blend-mode: screen;
