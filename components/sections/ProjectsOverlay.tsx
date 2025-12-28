@@ -226,18 +226,30 @@ const ProjectsOverlay = ({ isOpen, onClose }: ProjectsOverlayProps) => {
             { opacity: 1, duration: 0.5 }
         );
 
-        // Animate shape wrappers with stagger
-        gsap.fromTo(`.${styles.shapeWrapper}`,
-            { scale: 0, rotation: -180, opacity: 0 },
-            {
-                scale: 1,
-                rotation: 0,
-                opacity: 1,
-                duration: 0.8,
-                ease: 'back.out(1.7)',
-                stagger: 0.1
-            }
-        );
+        // MorphSVG Animation - shapes morph into letters
+        // @ts-ignore - MorphSVGPlugin is loaded via CDN
+        if (typeof window !== 'undefined' && window.MorphSVGPlugin) {
+            // @ts-ignore
+            gsap.registerPlugin(window.MorphSVGPlugin);
+
+            // Convert shapes to paths for morphing
+            // @ts-ignore
+            window.MorphSVGPlugin.convertToPath("#circle, #square, #triangle");
+
+            // Create the morphing timeline
+            const morphTl = gsap.timeline({
+                repeat: -1,
+                repeatDelay: 0.5,
+                delay: 0.5,
+                yoyo: true,
+                defaults: { duration: 1.5, ease: "power2.inOut" }
+            });
+
+            morphTl
+                .to("#triangle", { morphSVG: "#letter-a" })
+                .to("#square", { morphSVG: "#letter-b" }, "<")
+                .to("#circle", { morphSVG: "#letter-c" }, "<");
+        }
 
         // Small delay to ensure DOM is ready
         const timer = setTimeout(() => {
@@ -389,79 +401,39 @@ const ProjectsOverlay = ({ isOpen, onClose }: ProjectsOverlayProps) => {
                     </button>
 
                     <div ref={containerRef} className={styles.container}>
-                        {/* Animated Header with Geometric Shapes */}
+                        {/* Animated Header with MorphSVG - Shapes morph into letters */}
                         <header className={styles.header}>
-                            <div className={styles.shapeTitle}>
-                                {/* C - Circle */}
-                                <div className={styles.shapeWrapper}>
-                                    <svg className={styles.shapeSvg} viewBox="0 0 120 120">
-                                        <defs>
-                                            <linearGradient id="grad-c" x1="0%" y1="0%" x2="100%" y2="100%">
-                                                <stop offset="0%" stopColor="#f8dbb9" />
-                                                <stop offset="100%" stopColor="#fb8305" />
-                                            </linearGradient>
-                                        </defs>
-                                        <circle cx="60" cy="60" r="50" fill="url(#grad-c)" className={styles.shapeCircle} />
-                                    </svg>
-                                    <span className={styles.shapeLetter}>C</span>
-                                </div>
+                            <svg className={styles.morphSvg} viewBox="0 0 760 200" preserveAspectRatio="xMidYMid meet">
+                                <defs>
+                                    {/* Gradients */}
+                                    <linearGradient id="grad-1" x1="200" y1="300" x2="255" y2="0" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0" stopColor="#f8dbb9" />
+                                        <stop offset="0.5" stopColor="#fb8305" />
+                                    </linearGradient>
 
-                                {/* R - Rectangle */}
-                                <div className={styles.shapeWrapper}>
-                                    <svg className={styles.shapeSvg} viewBox="0 0 120 120">
-                                        <defs>
-                                            <linearGradient id="grad-r" x1="0%" y1="100%" x2="100%" y2="0%">
-                                                <stop offset="0%" stopColor="#7C3AED" />
-                                                <stop offset="100%" stopColor="#c4b5fd" />
-                                            </linearGradient>
-                                        </defs>
-                                        <rect x="10" y="20" width="100" height="80" rx="12" fill="url(#grad-r)" className={styles.shapeRect} />
-                                    </svg>
-                                    <span className={styles.shapeLetter}>R</span>
-                                </div>
+                                    <linearGradient id="grad-2" x1="340" y1="42" x2="240" y2="125" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0.1" stopColor="#f8dbb9" />
+                                        <stop offset="0.5" stopColor="#fb8305" />
+                                    </linearGradient>
 
-                                {/* A - Triangle */}
-                                <div className={styles.shapeWrapper}>
-                                    <svg className={styles.shapeSvg} viewBox="0 0 120 120">
-                                        <defs>
-                                            <linearGradient id="grad-a" x1="50%" y1="0%" x2="50%" y2="100%">
-                                                <stop offset="0%" stopColor="#10B981" />
-                                                <stop offset="100%" stopColor="#6ee7b7" />
-                                            </linearGradient>
-                                        </defs>
-                                        <polygon points="60,10 110,110 10,110" fill="url(#grad-a)" className={styles.shapeTriangle} />
-                                    </svg>
-                                    <span className={styles.shapeLetter}>A</span>
-                                </div>
+                                    <radialGradient id="grad-3" cx="460" cy="280" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0.1" stopColor="#f8dbb9" />
+                                        <stop offset="0.35" stopColor="#fb8305" />
+                                    </radialGradient>
 
-                                {/* F - Hexagon */}
-                                <div className={styles.shapeWrapper}>
-                                    <svg className={styles.shapeSvg} viewBox="0 0 120 120">
-                                        <defs>
-                                            <linearGradient id="grad-f" x1="0%" y1="0%" x2="100%" y2="100%">
-                                                <stop offset="0%" stopColor="#EF4444" />
-                                                <stop offset="100%" stopColor="#fca5a5" />
-                                            </linearGradient>
-                                        </defs>
-                                        <polygon points="60,5 110,30 110,90 60,115 10,90 10,30" fill="url(#grad-f)" className={styles.shapeHexagon} />
-                                    </svg>
-                                    <span className={styles.shapeLetter}>F</span>
-                                </div>
+                                    {/* Hidden letter paths for morphing targets */}
+                                    <g id="letters" style={{ visibility: 'hidden' }}>
+                                        <path id="letter-a" d="M222.8 164.5c0-.7.2-1.6.6-2.8l48.4-134.1c.7-2.2 3.4-3.3 8.2-3.3h6c4.7 0 7.4 1.1 8 3.3l48.4 134.3c.5 1 .7 1.8.7 2.6 0 2.3-3 3.5-8.8 3.5h-1.7c-4.7 0-7.4-1-8.1-3.3l-12-33.4h-60l-11.7 33.4c-.7 2.2-3.4 3.3-8.2 3.3h-1c-5.8 0-8.8-1.2-8.8-3.5zm35.3-48.8H307L285.5 55l-2.7-11.8-3.2 11.8-21.5 60.8z" />
+                                        <path id="letter-b" d="M364.6 162.9V32.3c0-4.1 2-6.2 6-6.2h36.6c14.9 0 26.2 3.3 34 9.8a32.5 32.5 0 0 1 11.7 26.4c0 6.8-2.2 13.2-6.7 19.4a29 29 0 0 1-15.7 11.6v.8a53.3 53.3 0 0 1 18.7 10.3c2.5 2.3 4.8 5.5 6.8 9.7s3 8.9 3 13.9c0 27.3-17.7 41-53.2 41h-35.1c-4 0-6.1-2-6.1-6.1zm18-75.1h23.6c8.2 0 15-2.3 20.2-7 5.3-4.6 8-10.5 8-17.6 0-7.2-2.3-12.5-7-16.1-4.6-3.6-12-5.4-22-5.4h-22.9v46zm0 65.7h29.7c9 0 16-2.3 20.8-7a25 25 0 0 0 7.4-19c0-7.8-2.7-13.8-8-18a38 38 0 0 0-23.6-6.2h-26.4v50.2z" />
+                                        <path id="letter-c" d="M531.7 97.7c0-48.5 22-72.7 66.2-72.7a82 82 0 0 1 26.8 4.2c8.1 2.8 12.1 5.6 12.1 8.5 0 1.9-.8 4.3-2.5 7.3s-3.2 4.5-4.4 4.5c-.3 0-1.7-.8-4.4-2.3a59.3 59.3 0 0 0-27.2-6.7c-16.5 0-28.6 4.6-36.4 13.7-7.7 9.1-11.6 23.6-11.6 43.4s3.9 34.2 11.5 43.4c7.7 9.2 19.6 13.8 35.7 13.8a66.6 66.6 0 0 0 30-7.7 25 25 0 0 1 5-2.5c1.3 0 2.8 1.5 4.6 4.5 1.7 3 2.6 5.2 2.6 6.5 0 3.2-4.2 6.4-12.7 9.7-8.6 3.4-18.4 5-29.5 5-22.5 0-39-5.9-49.7-17.6-10.7-11.8-16-30.1-16-55z" />
+                                    </g>
+                                </defs>
 
-                                {/* T - Diamond */}
-                                <div className={styles.shapeWrapper}>
-                                    <svg className={styles.shapeSvg} viewBox="0 0 120 120">
-                                        <defs>
-                                            <linearGradient id="grad-t" x1="50%" y1="0%" x2="50%" y2="100%">
-                                                <stop offset="0%" stopColor="#3B82F6" />
-                                                <stop offset="100%" stopColor="#93c5fd" />
-                                            </linearGradient>
-                                        </defs>
-                                        <polygon points="60,5 115,60 60,115 5,60" fill="url(#grad-t)" className={styles.shapeDiamond} />
-                                    </svg>
-                                    <span className={styles.shapeLetter}>T</span>
-                                </div>
-                            </div>
+                                {/* Visible animated shapes */}
+                                <polygon id="triangle" fill="url(#grad-1)" points="241,142 283,57 326,142" className={styles.morphShape} />
+                                <rect id="square" fill="url(#grad-2)" x="363" y="57" width="85" height="85" className={styles.morphShape} />
+                                <circle id="circle" fill="url(#grad-3)" cx="590" cy="100" r="42.5" className={styles.morphShape} />
+                            </svg>
                             <p className={styles.subtitle}>Selected works 2024 — Present</p>
                         </header>
 
