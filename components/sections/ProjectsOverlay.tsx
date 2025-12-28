@@ -305,11 +305,11 @@ const ProjectsOverlay = ({ isOpen, onClose }: ProjectsOverlayProps) => {
         }
 
         setIsAnimating(true);
+        setShowContent(false); // Hide content immediately so waves are visible
 
         const tl = gsap.timeline({
             onUpdate: renderWaves,
             onComplete: () => {
-                setShowContent(false);
                 setIsAnimating(false);
                 document.body.style.overflow = '';
 
