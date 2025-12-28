@@ -226,6 +226,19 @@ const ProjectsOverlay = ({ isOpen, onClose }: ProjectsOverlayProps) => {
             { opacity: 1, duration: 0.5 }
         );
 
+        // Animate shape wrappers with stagger
+        gsap.fromTo(`.${styles.shapeWrapper}`,
+            { scale: 0, rotation: -180, opacity: 0 },
+            {
+                scale: 1,
+                rotation: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: 'back.out(1.7)',
+                stagger: 0.1
+            }
+        );
+
         // Small delay to ensure DOM is ready
         const timer = setTimeout(() => {
             // The Animation: Animate stroke-dashoffset to 0 (draw the path)
@@ -376,9 +389,79 @@ const ProjectsOverlay = ({ isOpen, onClose }: ProjectsOverlayProps) => {
                     </button>
 
                     <div ref={containerRef} className={styles.container}>
-                        {/* Header */}
+                        {/* Animated Header with Geometric Shapes */}
                         <header className={styles.header}>
-                            <h2 className={styles.title}>Project Archive</h2>
+                            <div className={styles.shapeTitle}>
+                                {/* C - Circle */}
+                                <div className={styles.shapeWrapper}>
+                                    <svg className={styles.shapeSvg} viewBox="0 0 120 120">
+                                        <defs>
+                                            <linearGradient id="grad-c" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stopColor="#f8dbb9" />
+                                                <stop offset="100%" stopColor="#fb8305" />
+                                            </linearGradient>
+                                        </defs>
+                                        <circle cx="60" cy="60" r="50" fill="url(#grad-c)" className={styles.shapeCircle} />
+                                    </svg>
+                                    <span className={styles.shapeLetter}>C</span>
+                                </div>
+
+                                {/* R - Rectangle */}
+                                <div className={styles.shapeWrapper}>
+                                    <svg className={styles.shapeSvg} viewBox="0 0 120 120">
+                                        <defs>
+                                            <linearGradient id="grad-r" x1="0%" y1="100%" x2="100%" y2="0%">
+                                                <stop offset="0%" stopColor="#7C3AED" />
+                                                <stop offset="100%" stopColor="#c4b5fd" />
+                                            </linearGradient>
+                                        </defs>
+                                        <rect x="10" y="20" width="100" height="80" rx="12" fill="url(#grad-r)" className={styles.shapeRect} />
+                                    </svg>
+                                    <span className={styles.shapeLetter}>R</span>
+                                </div>
+
+                                {/* A - Triangle */}
+                                <div className={styles.shapeWrapper}>
+                                    <svg className={styles.shapeSvg} viewBox="0 0 120 120">
+                                        <defs>
+                                            <linearGradient id="grad-a" x1="50%" y1="0%" x2="50%" y2="100%">
+                                                <stop offset="0%" stopColor="#10B981" />
+                                                <stop offset="100%" stopColor="#6ee7b7" />
+                                            </linearGradient>
+                                        </defs>
+                                        <polygon points="60,10 110,110 10,110" fill="url(#grad-a)" className={styles.shapeTriangle} />
+                                    </svg>
+                                    <span className={styles.shapeLetter}>A</span>
+                                </div>
+
+                                {/* F - Hexagon */}
+                                <div className={styles.shapeWrapper}>
+                                    <svg className={styles.shapeSvg} viewBox="0 0 120 120">
+                                        <defs>
+                                            <linearGradient id="grad-f" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stopColor="#EF4444" />
+                                                <stop offset="100%" stopColor="#fca5a5" />
+                                            </linearGradient>
+                                        </defs>
+                                        <polygon points="60,5 110,30 110,90 60,115 10,90 10,30" fill="url(#grad-f)" className={styles.shapeHexagon} />
+                                    </svg>
+                                    <span className={styles.shapeLetter}>F</span>
+                                </div>
+
+                                {/* T - Diamond */}
+                                <div className={styles.shapeWrapper}>
+                                    <svg className={styles.shapeSvg} viewBox="0 0 120 120">
+                                        <defs>
+                                            <linearGradient id="grad-t" x1="50%" y1="0%" x2="50%" y2="100%">
+                                                <stop offset="0%" stopColor="#3B82F6" />
+                                                <stop offset="100%" stopColor="#93c5fd" />
+                                            </linearGradient>
+                                        </defs>
+                                        <polygon points="60,5 115,60 60,115 5,60" fill="url(#grad-t)" className={styles.shapeDiamond} />
+                                    </svg>
+                                    <span className={styles.shapeLetter}>T</span>
+                                </div>
+                            </div>
                             <p className={styles.subtitle}>Selected works 2024 — Present</p>
                         </header>
 
