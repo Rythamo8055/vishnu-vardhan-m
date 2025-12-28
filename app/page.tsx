@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Hero, Cursor, SmoothScroll, Navbar, ProjectsOverlay, CuriousOverlay } from '@/components';
@@ -12,6 +12,25 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Home() {
   const [showProjects, setShowProjects] = useState(false);
   const [showCurious, setShowCurious] = useState(false);
+  const bioRef = useRef<HTMLDivElement>(null);
+
+  // GSAP Animation for About Section
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(`.${styles.bioText}`, {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: bioRef.current,
+          start: "top 75%",
+          toggleActions: "play none none reverse"
+        }
+      });
+    }, bioRef);
+    return () => ctx.revert();
+  }, []);
 
 
   // Scroll to Contact (Footer)
@@ -38,13 +57,21 @@ export default function Home() {
           {/* Hero Section - Identity Reveal */}
           <IdentityReveal />
 
-          {/* About Section */}
+          {/* About / Hire Me Section */}
           <section id="about" className={styles.sectionDark}>
             <div className={styles.contentWrapper}>
-              <h2>About</h2>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
+              <h1 className={styles.aboutTitle}>ABOUT ME</h1>
+              <div ref={bioRef} className={styles.bioContainer}>
+                <p className={styles.bioText}>
+                  I am a <span className={styles.highlight}>3rd Year Computer Science</span> student and a <span className={styles.highlight}>Fullstack Engineer</span> driven by First Principles. I don&apos;t just write code; I architect intelligent systems that bridge the gap between human intent and machine execution.
+                </p>
+                <p className={styles.bioText}>
+                  My expertise lies in the bleeding edge of <span className={styles.highlight}>Generative UI</span> and <span className={styles.highlight}>LLM Agents</span>. I build applications where the interface adapts in real-time, powered by the logic of <span className={styles.highlight}>Python</span> and the fluidity of <span className={styles.highlight}>Flutter</span>.
+                </p>
+                <p className={styles.bioText}>
+                  From crafting pixel-perfect web experiences with <span className={styles.highlight}>Next.js</span> to training custom models, I am obsessed with the entire stack. I am not just looking for a job; I am looking for problems that demand a <span className={styles.highlight}>Creative Technologist</span>.
+                </p>
+              </div>
             </div>
           </section>
 

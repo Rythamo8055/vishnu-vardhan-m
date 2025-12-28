@@ -70,11 +70,12 @@ const IdentityHUD = () => {
             <div className={`${styles.glassPanel} ${styles.panelBL}`}>
                 <span className={styles.sectionHeader}>// MODULES</span>
                 <div className={styles.skillList}>
-                    <SkillItem name="GEN_AI_ENG" />
-                    <SkillItem name="LLM_AGENTS" />
+                    <SkillItem name="AI_ENGINEER" />
+                    <SkillItem name="FULLSTACK_DEV" />
+                    <SkillItem name="PYTHON_DEV" />
                     <SkillItem name="FLUTTER_UI" />
-                    <SkillItem name="PYTHON_DSA" />
-                    <SkillItem name="FULL_STACK" />
+                    <SkillItem name="GEN_AI" />
+                    <SkillItem name="CSE_STUDENT" />
                 </div>
             </div>
 
@@ -83,26 +84,21 @@ const IdentityHUD = () => {
                 <span className={styles.sectionHeader}>// PROFILE_DATA</span>
                 <div className={styles.statRow}>
                     <span className={styles.label}>CLASS</span>
-                    <span className={styles.value}>CREATIVE TECHNOLOGIST</span>
+                    <span className={styles.value}>ASPIRING AI ENGINEER</span>
                 </div>
                 <div className={styles.statRow}>
                     <span className={styles.label}>EXP</span>
-                    <span className={styles.value}>3 YEARS (STUDENT)</span>
+                    <span className={styles.value}>3RD YEAR CSE</span>
                 </div>
                 <div className={styles.statRow}>
                     <span className={styles.label}>MISSION</span>
                     <span className={styles.value} style={{ fontSize: '0.75rem', lineHeight: '1.4' }}>
-                        "BUILDING EXPERIENCES THAT DEFY GRAVITY."
+                        "CODING THE FUTURE OF AI."
                     </span>
                 </div>
             </div>
 
             {/* Bottom Center: CTA */}
-            <div className={`${styles.panelBC}`}>
-                <button className={styles.deployBtn} onClick={handleDeploy}>
-                    [ SCROLL DOWN ]
-                </button>
-            </div>
 
         </div>
     );
