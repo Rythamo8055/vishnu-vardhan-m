@@ -226,7 +226,7 @@ const ProjectsOverlay = ({ isOpen, onClose }: ProjectsOverlayProps) => {
             { opacity: 1, duration: 0.5 }
         );
 
-        // MorphSVG Animation - shapes morph into letters
+        // MorphSVG Animation - shapes morph into CRAFT letters
         // @ts-ignore - MorphSVGPlugin is loaded via CDN
         if (typeof window !== 'undefined' && window.MorphSVGPlugin) {
             // @ts-ignore
@@ -234,21 +234,23 @@ const ProjectsOverlay = ({ isOpen, onClose }: ProjectsOverlayProps) => {
 
             // Convert shapes to paths for morphing
             // @ts-ignore
-            window.MorphSVGPlugin.convertToPath("#circle, #square, #triangle");
+            window.MorphSVGPlugin.convertToPath("#shape-c, #shape-r, #shape-a, #shape-f, #shape-t");
 
-            // Create the morphing timeline
+            // Create the morphing timeline - all 5 shapes morph simultaneously
             const morphTl = gsap.timeline({
                 repeat: -1,
-                repeatDelay: 0.5,
+                repeatDelay: 1,
                 delay: 0.5,
                 yoyo: true,
                 defaults: { duration: 1.5, ease: "power2.inOut" }
             });
 
             morphTl
-                .to("#triangle", { morphSVG: "#letter-a" })
-                .to("#square", { morphSVG: "#letter-b" }, "<")
-                .to("#circle", { morphSVG: "#letter-c" }, "<");
+                .to("#shape-c", { morphSVG: "#letter-c" })
+                .to("#shape-r", { morphSVG: "#letter-r" }, "<")
+                .to("#shape-a", { morphSVG: "#letter-a" }, "<")
+                .to("#shape-f", { morphSVG: "#letter-f" }, "<")
+                .to("#shape-t", { morphSVG: "#letter-t" }, "<");
         }
 
         // Small delay to ensure DOM is ready
@@ -401,38 +403,57 @@ const ProjectsOverlay = ({ isOpen, onClose }: ProjectsOverlayProps) => {
                     </button>
 
                     <div ref={containerRef} className={styles.container}>
-                        {/* Animated Header with MorphSVG - Shapes morph into letters */}
+                        {/* Animated Header with MorphSVG - Shapes morph into CRAFT letters */}
                         <header className={styles.header}>
-                            <svg className={styles.morphSvg} viewBox="0 0 760 200" preserveAspectRatio="xMidYMid meet">
+                            <svg className={styles.morphSvg} viewBox="0 0 900 180" preserveAspectRatio="xMidYMid meet">
                                 <defs>
-                                    {/* Gradients */}
-                                    <linearGradient id="grad-1" x1="200" y1="300" x2="255" y2="0" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0" stopColor="#f8dbb9" />
-                                        <stop offset="0.5" stopColor="#fb8305" />
+                                    {/* White/Cream Gradients for each shape */}
+                                    <linearGradient id="grad-c" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stopColor="#fffce1" />
+                                        <stop offset="100%" stopColor="#e8e4cc" />
                                     </linearGradient>
 
-                                    <linearGradient id="grad-2" x1="340" y1="42" x2="240" y2="125" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0.1" stopColor="#f8dbb9" />
-                                        <stop offset="0.5" stopColor="#fb8305" />
+                                    <linearGradient id="grad-r" x1="0%" y1="100%" x2="100%" y2="0%">
+                                        <stop offset="0%" stopColor="#f0ede0" />
+                                        <stop offset="100%" stopColor="#fffce1" />
                                     </linearGradient>
 
-                                    <radialGradient id="grad-3" cx="460" cy="280" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0.1" stopColor="#f8dbb9" />
-                                        <stop offset="0.35" stopColor="#fb8305" />
-                                    </radialGradient>
+                                    <linearGradient id="grad-a" x1="50%" y1="0%" x2="50%" y2="100%">
+                                        <stop offset="0%" stopColor="#fffce1" />
+                                        <stop offset="100%" stopColor="#d9d6c5" />
+                                    </linearGradient>
 
-                                    {/* Hidden letter paths for morphing targets */}
+                                    <linearGradient id="grad-f" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stopColor="#f5f2e5" />
+                                        <stop offset="100%" stopColor="#fffce1" />
+                                    </linearGradient>
+
+                                    <linearGradient id="grad-t" x1="50%" y1="0%" x2="50%" y2="100%">
+                                        <stop offset="0%" stopColor="#fffce1" />
+                                        <stop offset="100%" stopColor="#e0ddd0" />
+                                    </linearGradient>
+
+                                    {/* Hidden letter paths for morphing targets - CRAFT */}
                                     <g id="letters" style={{ visibility: 'hidden' }}>
-                                        <path id="letter-a" d="M222.8 164.5c0-.7.2-1.6.6-2.8l48.4-134.1c.7-2.2 3.4-3.3 8.2-3.3h6c4.7 0 7.4 1.1 8 3.3l48.4 134.3c.5 1 .7 1.8.7 2.6 0 2.3-3 3.5-8.8 3.5h-1.7c-4.7 0-7.4-1-8.1-3.3l-12-33.4h-60l-11.7 33.4c-.7 2.2-3.4 3.3-8.2 3.3h-1c-5.8 0-8.8-1.2-8.8-3.5zm35.3-48.8H307L285.5 55l-2.7-11.8-3.2 11.8-21.5 60.8z" />
-                                        <path id="letter-b" d="M364.6 162.9V32.3c0-4.1 2-6.2 6-6.2h36.6c14.9 0 26.2 3.3 34 9.8a32.5 32.5 0 0 1 11.7 26.4c0 6.8-2.2 13.2-6.7 19.4a29 29 0 0 1-15.7 11.6v.8a53.3 53.3 0 0 1 18.7 10.3c2.5 2.3 4.8 5.5 6.8 9.7s3 8.9 3 13.9c0 27.3-17.7 41-53.2 41h-35.1c-4 0-6.1-2-6.1-6.1zm18-75.1h23.6c8.2 0 15-2.3 20.2-7 5.3-4.6 8-10.5 8-17.6 0-7.2-2.3-12.5-7-16.1-4.6-3.6-12-5.4-22-5.4h-22.9v46zm0 65.7h29.7c9 0 16-2.3 20.8-7a25 25 0 0 0 7.4-19c0-7.8-2.7-13.8-8-18a38 38 0 0 0-23.6-6.2h-26.4v50.2z" />
-                                        <path id="letter-c" d="M531.7 97.7c0-48.5 22-72.7 66.2-72.7a82 82 0 0 1 26.8 4.2c8.1 2.8 12.1 5.6 12.1 8.5 0 1.9-.8 4.3-2.5 7.3s-3.2 4.5-4.4 4.5c-.3 0-1.7-.8-4.4-2.3a59.3 59.3 0 0 0-27.2-6.7c-16.5 0-28.6 4.6-36.4 13.7-7.7 9.1-11.6 23.6-11.6 43.4s3.9 34.2 11.5 43.4c7.7 9.2 19.6 13.8 35.7 13.8a66.6 66.6 0 0 0 30-7.7 25 25 0 0 1 5-2.5c1.3 0 2.8 1.5 4.6 4.5 1.7 3 2.6 5.2 2.6 6.5 0 3.2-4.2 6.4-12.7 9.7-8.6 3.4-18.4 5-29.5 5-22.5 0-39-5.9-49.7-17.6-10.7-11.8-16-30.1-16-55z" />
+                                        {/* C */}
+                                        <path id="letter-c" d="M50 90c0-40 18-60 55-60a68 68 0 0 1 22 3.5c6.7 2.3 10 4.6 10 7 0 1.6-.7 3.6-2.1 6.1s-2.7 3.7-3.7 3.7c-.3 0-1.4-.7-3.6-1.9a49 49 0 0 0-22.5-5.5c-13.7 0-23.8 3.8-30.3 11.4-6.4 7.6-9.7 19.7-9.7 36.1s3.3 28.5 9.6 36.1c6.4 7.7 16.3 11.5 29.7 11.5a55 55 0 0 0 25-6.4c1.7-1 3.3-1.5 4.2-2.1 1.1 0 2.3 1.3 3.8 3.7 1.4 2.5 2.2 4.3 2.2 5.4 0 2.7-3.5 5.3-10.6 8.1-7.2 2.8-15.3 4.2-24.5 4.2-18.7 0-32.5-4.9-41.4-14.7C58.9 128 50 114.8 50 90z" />
+                                        {/* R */}
+                                        <path id="letter-r" d="M190 145V30c0-3.4 1.7-5.2 5-5.2h42c12.8 0 22.5 3 29.2 8.8a29.6 29.6 0 0 1 10 23c0 11.2-4.2 19.8-12.6 25.8a43 43 0 0 1-24.8 9l41 52.5c.5.7.8 1.4.8 2.1 0 2-2.7 3-8 3h-2c-4.2 0-7-.7-8.3-2.2l-40.3-52h-17v49c0 3.4-1.7 5.2-5 5.2h-5c-3.3 0-5-1.8-5-5.2zm15-63h28c9.5 0 17-2.5 22.4-7.5 5.5-5 8.2-11.5 8.2-19.5 0-6.5-2.2-11.5-6.5-15-4.3-3.5-11.2-5.2-20.6-5.2H205v47.2z" />
+                                        {/* A */}
+                                        <path id="letter-a" d="M330 145c0-.6.2-1.3.5-2.3l40.3-111.5c.6-1.8 2.8-2.7 6.8-2.7h5c3.9 0 6.2.9 6.7 2.7l40.3 111.7c.4.8.6 1.5.6 2.2 0 1.9-2.5 2.9-7.3 2.9h-1.4c-3.9 0-6.2-.8-6.7-2.7l-10-27.8h-50l-9.7 27.8c-.6 1.8-2.8 2.7-6.8 2.7h-.8c-4.8 0-7.3-1-7.3-2.9zm29.4-40.6h42l-18-50-2.3-9.8-2.7 9.8-18 50z" />
+                                        {/* F */}
+                                        <path id="letter-f" d="M490 145V30c0-3.4 1.7-5.2 5-5.2h65c3 0 4.5 1.5 4.5 4.5v3c0 3-1.5 4.5-4.5 4.5h-55v42h48c3 0 4.5 1.5 4.5 4.5v3c0 3-1.5 4.5-4.5 4.5h-48v54c0 3.4-1.7 5.2-5 5.2h-5c-3.3 0-5-1.8-5-5.2z" />
+                                        {/* T */}
+                                        <path id="letter-t" d="M620 37h-35c-3 0-4.5-1.5-4.5-4.5v-3c0-3 1.5-4.5 4.5-4.5h85c3 0 4.5 1.5 4.5 4.5v3c0 3-1.5 4.5-4.5 4.5h-35v108c0 3.4-1.7 5.2-5 5.2h-5c-3.3 0-5-1.8-5-5.2V37z" />
                                     </g>
                                 </defs>
 
-                                {/* Visible animated shapes */}
-                                <polygon id="triangle" fill="url(#grad-1)" points="241,142 283,57 326,142" className={styles.morphShape} />
-                                <rect id="square" fill="url(#grad-2)" x="363" y="57" width="85" height="85" className={styles.morphShape} />
-                                <circle id="circle" fill="url(#grad-3)" cx="590" cy="100" r="42.5" className={styles.morphShape} />
+                                {/* Visible animated shapes - 5 shapes for CRAFT */}
+                                <circle id="shape-c" fill="url(#grad-c)" cx="90" cy="90" r="45" className={styles.morphShape} />
+                                <rect id="shape-r" fill="url(#grad-r)" x="195" y="40" width="90" height="100" rx="8" className={styles.morphShape} />
+                                <polygon id="shape-a" fill="url(#grad-a)" points="380,140 425,35 470,140" className={styles.morphShape} />
+                                <polygon id="shape-f" fill="url(#grad-f)" points="530,30 590,55 590,125 530,150 470,125 470,55" className={styles.morphShape} />
+                                <polygon id="shape-t" fill="url(#grad-t)" points="670,35 720,90 670,145 620,90" className={styles.morphShape} />
                             </svg>
                             <p className={styles.subtitle}>Selected works 2024 — Present</p>
                         </header>
