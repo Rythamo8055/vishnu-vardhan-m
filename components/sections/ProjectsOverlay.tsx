@@ -457,7 +457,7 @@ const ProjectsOverlay = ({ isOpen, onClose }: ProjectsOverlayProps) => {
                                 <polygon id="shape-f" fill="url(#grad-f)" points="440,45 490,65 490,115 440,135 390,115 390,65" className={styles.morphShape} />
                                 <polygon id="shape-t" fill="url(#grad-t)" points="560,45 605,90 560,135 515,90" className={styles.morphShape} />
                             </svg>
-                            <p className={styles.subtitle}>Independent Projects & Experiments</p>
+                            <p className={styles.subtitle}>More than Syllabus — A Collection of My Curiosity and Skills</p>
                         </header>
 
                         {/* Spotlight Section with SVG Curve */}
