@@ -1,0 +1,104 @@
+.section {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    overflow: hidden;
+    padding: 10vh 5vw;
+    background-color: transparent;
+}
+
+/* Three-Column Grid: Content | Wide Gap | Content */
+.container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 25vw 1fr;
+    /* 25% viewport width gap in middle */
+    gap: 0;
+    align-items: center;
+    min-height: 60vh;
+}
+
+/* Left Column: Stacked Keywords */
+.keywordsColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+    /* Align to far left */
+    padding-left: 5vw;
+    grid-column: 1;
+    /* Explicitly first column */
+}
+
+.cinematicLine {
+    font-size: 3rem;
+    line-height: 1.1;
+    font-weight: 800;
+    text-transform: uppercase;
+
+    /* Solid White Text as requested */
+    color: #ffffff;
+    -webkit-text-stroke: 0;
+    white-space: nowrap;
+
+    transition: all 0.3s;
+    opacity: 0.3;
+    /* Start dimmed */
+    transform: scale(0.95);
+    filter: blur(2px);
+}
+
+/* Right Column: Taglines */
+.taglinesColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: flex-end;
+    /* Align to far right */
+    text-align: right;
+    padding-right: 5vw;
+    grid-column: 3;
+    /* Explicitly third column (skipping center) */
+}
+
+.tagline {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+.taglineHighlight {
+    color: var(--accent-orange, #f97316);
+    font-weight: 600;
+}
+
+/* Active state from GSAP */
+.cinematicLine.active {
+    color: #fff;
+    -webkit-text-stroke: 0;
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+}
+
+/* Mobile: Stack columns vertically */
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+    }
+
+    .keywordsColumn {
+        align-items: center;
+    }
+
+    .cinematicLine {
+        font-size: 2rem;
+    }
+
+    .taglinesColumn {
+        text-align: center;
+    }
+}

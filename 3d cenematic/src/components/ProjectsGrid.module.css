@@ -1,0 +1,208 @@
+.section {
+    padding: 3rem 1.5rem;
+    /* Reduced mobile padding */
+    background-color: transparent;
+    color: #fff;
+    position: relative;
+    z-index: 10;
+    margin: 1rem;
+    /* Minimal mobile margin */
+}
+
+@media (min-width: 768px) {
+    .section {
+        padding: 6rem 2rem;
+        margin: 0;
+    }
+}
+
+.container {
+    width: 100%;
+    /* Remove max-width to allow full edge-to-edge spacing */
+    max-width: none;
+    margin: 0;
+}
+
+.header {
+    margin-bottom: 2rem;
+    padding: 0 5vw;
+    /* Align header comfortably */
+}
+
+@media (min-width: 768px) {
+    .header {
+        margin-bottom: 4rem;
+    }
+}
+
+.label {
+    color: var(--accent-orange);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+    .label {
+        font-size: 0.875rem;
+        margin-bottom: 1rem;
+    }
+}
+
+.heading {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+@media (min-width: 768px) {
+    .heading {
+        font-size: 3rem;
+    }
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* Single column on mobile */
+    gap: 1.5rem;
+    padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+    .grid {
+        /* 3 Columns: Card | GAP | Card */
+        grid-template-columns: 1fr 30vw 1fr;
+        gap: 3rem 0;
+        /* Vertical gap 3rem, horizontal handled by cols */
+        padding: 0 4rem;
+    }
+}
+
+.card {
+    display: block;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s;
+}
+
+@media (min-width: 768px) {
+    .card {
+        padding: 2rem;
+    }
+
+    /* Force odd cards Left, even cards Right */
+    .card:nth-child(odd) {
+        grid-column: 1;
+    }
+
+    .card:nth-child(even) {
+        grid-column: 3;
+    }
+}
+
+.card:hover {
+    border-color: var(--accent-orange);
+    transform: translateY(-5px);
+    background-color: rgba(20, 20, 20, 0.4);
+    /* Slightly darkening on hover */
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .cardHeader {
+        margin-bottom: 1.5rem;
+    }
+}
+
+.category {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent-orange);
+    text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+    .category {
+        font-size: 0.75rem;
+    }
+}
+
+.arrow {
+    color: rgba(255, 255, 255, 0.2);
+    transition: color 0.3s;
+}
+
+.card:hover .arrow {
+    color: var(--accent-orange);
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #fff;
+    /* Ensure white */
+    transition: color 0.3s;
+}
+
+@media (min-width: 768px) {
+    .title {
+        font-size: 1.875rem;
+        margin-bottom: 1rem;
+    }
+}
+
+.card:hover .title {
+    color: var(--accent-orange);
+}
+
+.description {
+    color: rgba(255, 255, 255, 0.85);
+    /* Brighter for readability on transparent bg */
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+    .description {
+        margin-bottom: 1.5rem;
+        line-height: 1.625;
+    }
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    font-size: 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    color: rgba(255, 255, 255, 0.85);
+    /* Increased contrast */
+    background: rgba(255, 255, 255, 0.05);
+    /* Slight background boost */
+}
+
+@media (min-width: 768px) {
+    .tag {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+    }
+}

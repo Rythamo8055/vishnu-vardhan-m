@@ -1,0 +1,225 @@
+.heroContainer {
+    position: relative;
+    height: 100vh;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .overlay {
+        padding: 4rem 6rem;
+    }
+}
+
+.topRow {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Horizontal space on desktop, Vertical on mobile */
+    align-items: flex-start;
+    margin-top: 1rem;
+    flex: 1;
+    /* Take available vertical space */
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .topRow {
+        flex-direction: row;
+        margin-top: 6rem;
+    }
+}
+
+/* Identity Block (Left/Top) */
+.identityBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    pointer-events: auto;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .identityBlock {
+        max-width: 50%;
+        gap: 4rem;
+    }
+}
+
+.introLine {
+    color: var(--accent-orange);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.2em;
+    font-size: 0.75rem;
+}
+
+.heroTitle {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 0.9;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .heroTitle {
+        font-size: 5.5rem;
+        margin-bottom: 2rem;
+    }
+}
+
+.skillsGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: #d4d4d8;
+    border-left: 2px solid var(--accent-orange);
+    padding-left: 1rem;
+}
+
+@media (min-width: 768px) {
+    .skillsGrid {
+        font-size: 0.875rem;
+        gap: 0.75rem;
+        /* Padding is now handled by the mask or parent, so we can relax this */
+        /* padding-left: 1.5rem; */
+    }
+}
+
+/* Mask for the sliding animation */
+.skillsMask {
+    height: 3rem;
+    /* Height of approx 2 items */
+    overflow: hidden;
+    position: relative;
+    border-left: 2px solid var(--accent-orange);
+    padding-left: 1rem;
+    margin-top: 1rem;
+
+    /* Fade mask at top/bottom for extra cinematic feel */
+    mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+}
+
+.skillsGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: #d4d4d8;
+    /* Removed border from here, moved to mask */
+}
+
+.skillItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.skillIndex {
+    color: var(--accent-orange);
+    font-weight: 700;
+    font-size: 0.65rem;
+}
+
+/* Value Prop (Right/Bottom) */
+.valueProp {
+    text-align: left;
+    pointer-events: auto;
+    max-width: 90%;
+    margin-top: auto;
+    /* Push to bottom of topRow */
+    margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+    .valueProp {
+        text-align: right;
+        margin-top: 0;
+        margin-bottom: auto;
+        max-width: 24rem;
+    }
+}
+
+.valuePropTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+    .valuePropTitle {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+}
+
+.valuePropText {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .valuePropText {
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+}
+
+/* Social Icons */
+.socialRow {
+    pointer-events: auto;
+    display: flex;
+    justify-content: flex-end;
+    /* Align right */
+    gap: 2.5rem;
+    color: rgba(255, 255, 255, 0.6);
+    padding-bottom: 0;
+}
+
+@media (min-width: 768px) {
+    .socialRow {
+        margin-top: auto;
+        padding-bottom: 2rem;
+        gap: 3rem;
+        /* Increased gap on desktop */
+    }
+}
+
+.socialLink {
+    width: 1.75rem;
+    height: 1.75rem;
+    transition: all 0.3s;
+}
+
+@media (min-width: 768px) {
+    .socialLink {
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+.socialLink:hover {
+    color: var(--accent-orange);
+    transform: translateY(-2px);
+}
